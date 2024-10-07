@@ -1,11 +1,11 @@
 import React from "react";
-import { Email, Password } from "../../atoms/TextInput";
+import { Email } from "../../atoms/TextInput";
 import { PrimaryButton } from "../../atoms/Button";
 import { PasswordGroup } from "../../molecules/InputGroup";
 
 export const SignIn = () => {
   return (
-    <form>
+    <form className="flex flex-col gap-4 ">
       <Email placeholder="Enter email" />
       <PasswordGroup
         placeholder="Enter password"

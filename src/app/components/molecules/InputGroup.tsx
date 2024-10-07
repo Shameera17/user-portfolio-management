@@ -20,7 +20,7 @@ export const PasswordGroup: React.FC<InputGroupProps> = ({
   return (
     <div>
       {/* Input Field */}
-      <Password placeholder={placeholder} />
+      <Password value={value} onChange={onChange} placeholder={placeholder} />
       {/* Forgot Password Link */}
       <Link
         className="text-sm text-blue-600 hover:underline flex justify-end right-2 top-3"
