@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-interface ButtonProps {
+interface IButtonProps {
   type?: "submit" | "reset" | "button" | undefined;
   variant?:
     | "default"
@@ -13,7 +13,7 @@ interface ButtonProps {
     | undefined;
   label: string;
 }
-export const PrimaryButton = (props: ButtonProps) => {
+export const PrimaryButton = (props: IButtonProps) => {
   return (
     <Button className="w-full" type={props.type} variant={props.variant}>
       {props.label}
