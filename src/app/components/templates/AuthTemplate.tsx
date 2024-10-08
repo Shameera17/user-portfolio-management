@@ -12,16 +12,27 @@ export const AuthTemplate = ({
   subtitle: string;
 }) => {
   return (
-    <div className="min-h-screen flex p-6">
-      <section className="relative hidden md:flex md:w-1/3  h-auto">
-        <Image src="/images/login-bg.svg" fill={true} alt="auth-side-img" />
+    <div className="min-h-screen flex">
+      {/* Left Section (Image) */}
+      <section className="relative hidden md:flex md:w-1/3 h-screen">
+        <Image
+          src="/images/login-bg.svg"
+          fill={true}
+          alt="auth-side-img"
+          className="object-cover p-6"
+          loading="lazy"
+        />
       </section>
-      <section className="md:w-2/3 h-auto ">
-        <div className="max-w-sm ">
-          <div>
-            <Image src="/images/logo.svg" width={78} height={24} alt="logo" />
+
+      {/* Right Section (Form) */}
+      <section className="flex flex-col justify-center items-center md:w-2/3 h-screen p-6">
+        <div className="max-w-sm w-full">
+          <div className="mb-8">
+            <Image src="/images/Logo.svg" width={78} height={24} alt="logo" />
             <AuthLabelGroup title={title} subtitle={subtitle} />
           </div>
+
+          {/* Children (Input Form) */}
           {children}
         </div>
       </section>
