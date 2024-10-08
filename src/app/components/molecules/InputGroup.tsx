@@ -1,6 +1,7 @@
 import React from "react";
 import { Password } from "../atoms/TextInput";
 import Link from "next/link";
+import { LinkText, P3 } from "../atoms/Typography";
 
 interface InputGroupProps {
   placeholder: string;
@@ -22,12 +23,12 @@ export const PasswordGroup: React.FC<InputGroupProps> = ({
       {/* Input Field */}
       <Password value={value} onChange={onChange} placeholder={placeholder} />
       {/* Forgot Password Link */}
-      <Link
-        className="text-sm text-blue-600 hover:underline flex justify-end right-2 top-3"
-        href={linkHref}
-      >
-        {linkText}
-      </Link>
+
+      <LinkText
+        className="flex justify-end pt-2"
+        text={linkText}
+        linkHref={linkHref}
+      />
     </div>
   );
 };

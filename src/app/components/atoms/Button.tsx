@@ -15,7 +15,11 @@ interface IButtonProps {
 }
 export const PrimaryButton = (props: IButtonProps) => {
   return (
-    <Button className="w-full" type={props.type} variant={props.variant}>
+    <Button
+      className="w-full bg-[#6466E9] hover:bg-[#6466E9]"
+      type={props.type}
+      variant={props.variant}
+    >
       {props.label}
     </Button>
   );

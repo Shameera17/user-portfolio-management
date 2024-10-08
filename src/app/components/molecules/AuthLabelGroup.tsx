@@ -1,5 +1,5 @@
 import React from "react";
-import { H2, P } from "../atoms/Typography";
+import { H2, LinkText, P, P1, P2, P3 } from "../atoms/Typography";
 
 export const AuthLabelGroup = ({
   title,
@@ -9,9 +9,27 @@ export const AuthLabelGroup = ({
   subtitle: string;
 }) => {
   return (
-    <div>
+    <>
       <H2 text={title} />
-      <P text={subtitle} />
+      <P1 text={subtitle} />
+    </>
+  );
+};
+export const AuthLabelGroup1 = ({
+  text1,
+  text2,
+  onClick1,
+  href,
+}: {
+  text1: string;
+  text2: string;
+  onClick1?: () => void;
+  href?: string;
+}) => {
+  return (
+    <div className="flex gap-2">
+      <P2 text={text1} onClick={onClick1} />
+      <LinkText text={text2} linkHref={href!} />
     </div>
   );
 };

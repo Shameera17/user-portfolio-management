@@ -27,7 +27,7 @@ export const AuthTemplate = ({
       {/* Right Section (Form) */}
       <section className="flex flex-col justify-center items-center md:w-2/3 h-screen p-6">
         <div className="max-w-sm w-full">
-          <div className="mb-8">
+          <div className="mb-8 flex flex-col place-items-center gap-3">
             <Image src="/images/Logo.svg" width={78} height={24} alt="logo" />
             <AuthLabelGroup title={title} subtitle={subtitle} />
           </div>
