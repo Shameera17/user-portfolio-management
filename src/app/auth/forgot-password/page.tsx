@@ -1,5 +1,6 @@
+"use client";
+
 import { ForgotPassword } from "@/app/components/organisms/form/ForgotPassword";
-import { SignIn } from "@/app/components/organisms/form/SignIn";
 import { AuthTemplate } from "@/app/components/templates/AuthTemplate";
 import React from "react";
 

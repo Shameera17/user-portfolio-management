@@ -1,7 +1,6 @@
 import React from "react";
 import { PrimaryButton } from "../../atoms/Button";
 import { AuthLabelGroup1 } from "../../molecules/AuthLabelGroup";
-import { PasswordGroup } from "../../molecules/InputGroup";
 import { Email } from "../../atoms/TextInput";
 
 export const ForgotPassword = () => {
