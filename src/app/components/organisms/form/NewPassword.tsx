@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { TextInput } from "../../molecules/TextInput";
+import { PasswordInput, TextInput } from "../../molecules/TextInput";
 import { PrimaryButton } from "../../atoms/Button";
 import CheckPasswordGroup from "../../molecules/CheckPasswordGroup";
 
@@ -25,6 +25,7 @@ export const NewPassword = () => {
       password: "",
       confirmPassword: "",
     },
+    mode: "onChange",
   });
 
   const onSubmit = (data: FormValues) => {
@@ -36,15 +37,13 @@ export const NewPassword = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4"
       >
-        <TextInput
+        <PasswordInput
           control={form.control}
-          type="password"
           name="password"
           placeholder="Enter your password"
         />
-        <TextInput
+        <PasswordInput
           control={form.control}
-          type="password"
           name="confirmPassword"
           placeholder="Re-enter a password"
         />

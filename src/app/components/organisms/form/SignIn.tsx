@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { TextInput } from "../../molecules/TextInput";
+import { PasswordInput, TextInput } from "../../molecules/TextInput";
 import { PrimaryButton } from "../../atoms/Button";
 import { AuthLabelGroup1 } from "../../molecules/AuthLabelGroup";
 
@@ -40,9 +40,8 @@ export const SignIn = () => {
           name="email"
           placeholder="Enter your email"
         />
-        <TextInput
+        <PasswordInput
           control={form.control}
-          type="password"
           name="password"
           placeholder="Enter your password"
         />

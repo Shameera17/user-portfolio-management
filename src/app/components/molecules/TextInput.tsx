@@ -1,3 +1,5 @@
+"use client";
+
 import { useFormControl } from "@/app/utils/hooks/useFormControl";
 import {
   FormControl,
@@ -6,29 +8,84 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { HTMLInputTypeAttribute } from "react";
+import { HTMLInputTypeAttribute, useState, useCallback } from "react";
 import { Control, FieldValues, Path } from "react-hook-form";
+import { Eye, EyeClosed } from "lucide-react";
 
-// Update the interface to accept generic types for better flexibility
+// Updated interface for better flexibility with generic types
 interface IInputProps<T extends FieldValues> {
-  type?: HTMLInputTypeAttribute | undefined;
+  type?: HTMLInputTypeAttribute;
   placeholder?: string;
   label?: string;
   control: Control<T>;
-  name: Path<T>; // Updated to use Path<T> from react-hook-form
+  name: Path<T>;
 }
 
-// Make the component generic
-export function TextInput<T extends FieldValues>(props: IInputProps<T>) {
+// Generic TextInput component
+export function TextInput<T extends FieldValues>({
+  type,
+  placeholder,
+  label,
+  control,
+  name,
+}: IInputProps<T>) {
   const { field, error } = useFormControl({
-    control: props.control,
-    name: props.name,
+    control,
+    name,
   });
+
   return (
     <FormItem>
-      <FormLabel>{props.label}</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <FormControl>
-        <Input type={props.type} placeholder={props.placeholder} {...field} />
+        <Input type={type} placeholder={placeholder} {...field} />
+      </FormControl>
+      <FormMessage>{error?.message}</FormMessage>
+    </FormItem>
+  );
+}
+
+// Generic PasswordInput component with toggle visibility feature
+export function PasswordInput<T extends FieldValues>({
+  placeholder,
+  label,
+  control,
+  name,
+}: IInputProps<T>) {
+  const { field, error } = useFormControl({
+    control,
+    name,
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Use useCallback to avoid re-creating the function on each render
+  const togglePasswordVisibility = useCallback(() => {
+    setShowPassword((prevState) => !prevState);
+  }, []);
+
+  return (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <FormControl>
+        <div className="relative">
+          <Input
+            type={showPassword ? "text" : "password"}
+            placeholder={placeholder}
+            {...field}
+          />
+          {showPassword ? (
+            <Eye
+              className="absolute right-4 top-1.5 z-10 cursor-pointer "
+              onClick={togglePasswordVisibility}
+            />
+          ) : (
+            <EyeClosed
+              className="absolute right-4 top-1.5 z-10 cursor-pointer "
+              onClick={togglePasswordVisibility}
+            />
+          )}
+        </div>
       </FormControl>
       <FormMessage>{error?.message}</FormMessage>
     </FormItem>
