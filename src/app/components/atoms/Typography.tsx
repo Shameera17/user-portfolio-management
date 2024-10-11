@@ -64,6 +64,16 @@ export function P3({ text, onClick }: TypographyProps) {
     </p>
   );
 }
+export function P4({ text, onClick }: TypographyProps) {
+  return (
+    <p
+      onClick={onClick}
+      className="font-inter font-semibold text-[10px] leading-[1.25] text-[#677489]"
+    >
+      {text}
+    </p>
+  );
+}
 
 export function Blockquote({ text }: TypographyProps) {
   return (
