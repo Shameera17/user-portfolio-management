@@ -12,14 +12,14 @@ export const AuthTemplate = ({
   subtitle: string;
 }) => {
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex justify-center">
       {/* Left Section (Image) */}
       <section className="relative hidden md:flex md:w-1/3 h-screen">
         <Image
           src="/images/login-bg.svg"
           fill={true}
           alt="auth-side-img"
-          className="object-cover p-6"
+          className="object-fit p-6"
           loading="lazy"
         />
       </section>

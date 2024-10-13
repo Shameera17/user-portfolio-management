@@ -7,8 +7,10 @@ import { PasswordInput, TextInput } from "../../molecules/TextInput";
 import { PrimaryButton } from "../../atoms/Button";
 import { AuthLabelGroup1 } from "../../molecules/AuthLabelGroup";
 import CheckPasswordGroup from "../../molecules/CheckPasswordGroup";
-
+import axios from "axios";
+import { useRouter } from "next/navigation";
 export const SignUp = () => {
+  const router = useRouter();
   const formSchema = z.object({
     email: z
       .string()
@@ -26,8 +28,10 @@ export const SignUp = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
+  const onSubmit = async (data: FormValues) => {
+    const response = await axios.post("/api/signup", data);
+    console.log(response);
+    router.push("/auth/signin");
   };
   return (
     <Form {...form}>

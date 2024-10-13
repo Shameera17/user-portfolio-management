@@ -4,6 +4,7 @@ import "./globals.css";
 import { getServerSession } from "next-auth";
 import Provider from "./client-provider";
 import { authOptions } from "@/lib/auth";
+import { UserProvider } from "./context/userContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,7 +33,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider session={session}>{children}</Provider>
+        <Provider session={session}>
+          <UserProvider>{children}</UserProvider>
+        </Provider>
       </body>
     </html>
   );
