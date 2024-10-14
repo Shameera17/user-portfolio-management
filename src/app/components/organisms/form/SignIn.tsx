@@ -8,9 +8,11 @@ import { PrimaryButton } from "../../atoms/Button";
 import { AuthLabelGroup1 } from "../../molecules/AuthLabelGroup";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useUser } from "@/app/context/userContext";
 
 export const SignIn = () => {
   const router = useRouter();
+  const { login } = useUser();
   const formSchema = z.object({
     email: z
       .string()
@@ -28,8 +30,9 @@ export const SignIn = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    const response = axios.post("/api/signin", data);
+  const onSubmit = async (data: FormValues) => {
+    const response = await axios.post("/api/signin", data);
+    login(response?.data);
     router.push("/");
   };
   return (

@@ -8,6 +8,7 @@ import {
   ReactNode,
 } from "react";
 import { User } from "../types/user"; // Import the User type from types/user.ts
+import { getCookie } from "@/lib/helper/cookie";
 
 // Define the shape of the context's value
 interface UserContextType {
@@ -39,21 +40,27 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   // Check session storage for user data when the component mounts
   useEffect(() => {
-    const savedUser = sessionStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser)); // Parse and set user data
+    const storedToken = getCookie("token");
+    if (storedToken) {
+      setUser({
+        token: storedToken,
+        email: sessionStorage.getItem("email")!,
+        name: sessionStorage.getItem("displayName")!,
+      });
     }
   }, []);
 
   // Function to log in the user
   const login = (userData: User) => {
-    sessionStorage.setItem("user", JSON.stringify(userData));
+    sessionStorage.setItem("displayName", userData.name);
+    sessionStorage.setItem("email", userData.email);
     setUser(userData);
   };
 
   // Function to log out the user
   const logout = () => {
-    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("displayName");
+    sessionStorage.removeItem("email");
     setUser(null);
   };
 

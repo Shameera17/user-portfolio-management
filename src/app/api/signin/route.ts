@@ -18,11 +18,22 @@ export async function POST(request: Request) {
       );
     }
 
+    const token = jwt.sign({ userId: user._id }, process.env.AUTH_SECRET!, {
+      expiresIn: "1h",
+    });
     const userData = {
-      name: user.name,
+      name: user.name || user.email,
       email: user.email,
+      token,
     };
-    return NextResponse.json({ message: "Login successful", user: userData });
+
+    const response = NextResponse.json(userData, { status: 200 });
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      maxAge: 3600,
+    });
+
+    return response;
   } catch (error) {
     console.log(error);
     return NextResponse.json(
