@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import Provider from "./client-provider";
 import { UserProvider } from "./context/userContext";
 import { authOptions } from "./api/auth/[...nextauth]/route";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,6 +36,7 @@ export default async function RootLayout({
       >
         <Provider session={session}>
           <UserProvider>{children}</UserProvider>
+          <Toaster />
         </Provider>
       </body>
     </html>

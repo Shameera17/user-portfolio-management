@@ -9,10 +9,12 @@ import { AuthLabelGroup1 } from "../../molecules/AuthLabelGroup";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useUser } from "@/app/context/userContext";
+import { toast } from "sonner";
 
 export const SignIn = () => {
   const router = useRouter();
   const { login } = useUser();
+  const [isLoading, setIsLoading] = React.useState(false);
   const formSchema = z.object({
     email: z
       .string()
@@ -31,9 +33,21 @@ export const SignIn = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
-    const response = await axios.post("/api/signin", data);
-    login(response?.data);
-    router.push("/");
+    setIsLoading(true);
+    await axios
+      .post("/api/signin", data)
+      .then((response) => {
+        login(response?.data);
+        toast.success("Login successful.");
+        router.push("/");
+      })
+      .catch((error) => {
+        toast.error("Login failed. Please try again.");
+        console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
   return (
     <Form {...form}>
@@ -52,7 +66,7 @@ export const SignIn = () => {
           name="password"
           placeholder="Enter your password"
         />
-        <PrimaryButton label="Sign In" type="submit" />
+        <PrimaryButton isLoading={isLoading} label="Sign In" type="submit" />
         <AuthLabelGroup1
           text1={"Not a member?"}
           text2={"Create an account"}

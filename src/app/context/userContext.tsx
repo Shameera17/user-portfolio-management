@@ -40,14 +40,12 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   // Check session storage for user data when the component mounts
   useEffect(() => {
-    const storedToken = getCookie("token");
-    if (storedToken) {
+    if (sessionStorage.getItem("email"))
       setUser({
-        token: storedToken,
-        email: sessionStorage.getItem("email")!,
-        name: sessionStorage.getItem("displayName")!,
+        token: getCookie("token")! || "",
+        email: sessionStorage.getItem("email")! || "",
+        name: sessionStorage.getItem("displayName")! || "",
       });
-    }
   }, []);
 
   // Function to log in the user
@@ -63,7 +61,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     sessionStorage.removeItem("email");
     setUser(null);
   };
-
   return (
     // Provide the context value to child components
     <UserContext.Provider value={{ user, login, logout }}>
