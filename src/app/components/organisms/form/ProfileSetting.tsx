@@ -21,7 +21,7 @@ export const ProfileSetting = () => {
 
   const { data, error } = useSWR(
     user?.email ? `/api/user?email=${user.email}` : null,
-    () => fetchUserProfile(user?.email!)
+    () => (user?.email ? fetchUserProfile(user.email) : null) // Check if email exists
   );
 
   const formSchema = z.object({
@@ -39,12 +39,17 @@ export const ProfileSetting = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: data?.email,
-      jobTitle: data?.jobTitle,
-      name: data?.name,
-      bio: data?.bio,
+      email: data?.email ?? "",
+      jobTitle: data?.jobTitle ?? "",
+      name: data?.name ?? "",
+      bio: data?.bio ?? "",
     },
-    values: data, // will get updated once values returns
+    values: data ?? {
+      email: "",
+      jobTitle: "",
+      name: "",
+      bio: "",
+    }, // will get updated once values returns
   });
 
   const onSubmit = async (formData: FormValues) => {

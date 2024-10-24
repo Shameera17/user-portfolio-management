@@ -8,6 +8,8 @@ export default function ProfilePage() {
   const { user } = useUser();
   if (!user) return <div>Loading...</div>;
   return (
-    <DashboardTemplate title="Profile settings" children={<ProfileSetting />} />
+    <DashboardTemplate title="Profile settings">
+      <ProfileSetting />
+    </DashboardTemplate>
   );
 }
