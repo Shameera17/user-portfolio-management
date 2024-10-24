@@ -14,12 +14,12 @@ export function H1({ text }: TypographyProps) {
     </h1>
   );
 }
-export function H2({ text }: { text: string }) {
-  return (
-    <h2 className="font-inter font-semibold text-[32px] leading-[1.25] text-[#20293A]">
-      {text}
-    </h2>
-  );
+export function H2({ text, fontSize }: { text: string; fontSize?: string }) {
+  const styles = `font-inter font-semibold text-[${
+    fontSize ?? "32px"
+  }] leading-[1.25] text-[#20293A]`;
+
+  return <h2 className={styles}>{text}</h2>;
 }
 
 export function H3({ text }: TypographyProps) {

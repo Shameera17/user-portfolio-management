@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { HTMLInputTypeAttribute, useState, useCallback } from "react";
 import { Control, FieldValues, Path } from "react-hook-form";
 import { Eye, EyeClosed } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 // Updated interface for better flexibility with generic types
 interface IInputProps<T extends FieldValues> {
@@ -19,11 +20,40 @@ interface IInputProps<T extends FieldValues> {
   label?: string;
   control: Control<T>;
   name: Path<T>;
+  disabled?: boolean;
 }
 
 // Generic TextInput component
 export function TextInput<T extends FieldValues>({
   type,
+  placeholder,
+  label,
+  control,
+  name,
+  disabled,
+}: IInputProps<T>) {
+  const { field, error } = useFormControl({
+    control,
+    name,
+  });
+
+  return (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <FormControl>
+        <Input
+          disabled={disabled}
+          type={type}
+          placeholder={placeholder}
+          {...field}
+        />
+      </FormControl>
+      <FormMessage>{error?.message}</FormMessage>
+    </FormItem>
+  );
+}
+// Generic TextArea component
+export function TextArea<T extends FieldValues>({
   placeholder,
   label,
   control,
@@ -38,7 +68,7 @@ export function TextInput<T extends FieldValues>({
     <FormItem>
       <FormLabel>{label}</FormLabel>
       <FormControl>
-        <Input type={type} placeholder={placeholder} {...field} />
+        <Textarea placeholder={placeholder} {...field} />
       </FormControl>
       <FormMessage>{error?.message}</FormMessage>
     </FormItem>

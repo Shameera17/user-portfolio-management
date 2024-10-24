@@ -16,20 +16,31 @@ interface IButtonProps {
   label: string;
   onClick?: () => void;
   isLoading?: boolean;
+  width?: string; // Add width prop
+  iconPath?: string;
 }
+
 export const PrimaryButton = (props: IButtonProps) => {
   return (
     <Button
       disabled={props.isLoading}
-      className="w-full bg-[#6466E9] hover:bg-[#6466E9]"
+      className={`bg-[#6466E9] hover:bg-[#6466E9] ${
+        props.width ? props.width : "w-full"
+      }`}
       type={props.type}
       variant={props.variant}
     >
+      {props.iconPath && !props.isLoading && (
+        <Avatar>
+          <AvatarImage className="mr-2 h-4 w-4 " src={props.iconPath} />
+        </Avatar>
+      )}
       {props.isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
       {props.label}
     </Button>
   );
 };
+
 export const GithubButton = (props: IButtonProps) => {
   return (
     <Button
