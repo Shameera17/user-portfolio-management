@@ -21,6 +21,7 @@ interface IInputProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
   disabled?: boolean;
+  readonly?: boolean;
 }
 
 // Generic TextInput component
@@ -31,6 +32,7 @@ export function TextInput<T extends FieldValues>({
   control,
   name,
   disabled,
+  readonly,
 }: IInputProps<T>) {
   const { field, error } = useFormControl({
     control,
@@ -43,6 +45,7 @@ export function TextInput<T extends FieldValues>({
       <FormControl>
         <Input
           disabled={disabled}
+          readOnly={readonly}
           type={type}
           placeholder={placeholder}
           {...field}

@@ -15,6 +15,7 @@ interface UserContextType {
   user: User | null;
   login: (userData: User) => void;
   logout: () => void;
+  updateUser: (updatedUserData: { name: string; email: string }) => void;
 }
 
 // Create UserContext with initial value as undefined
@@ -61,9 +62,18 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     sessionStorage.removeItem("email");
     setUser(null);
   };
+
+  const updateUser = (updatedUserData: { name: string; email: string }) => {
+    setUser((prevUser) => {
+      if (prevUser) {
+        return { ...prevUser, ...updatedUserData };
+      }
+      return null;
+    });
+  };
   return (
     // Provide the context value to child components
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </UserContext.Provider>
   );

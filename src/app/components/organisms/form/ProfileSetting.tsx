@@ -1,19 +1,29 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { TextArea, TextInput } from "../../molecules/TextInput";
 import { PrimaryButton } from "../../atoms/Button";
-import { useRouter } from "next/navigation";
-import axios from "axios";
 import { useUser } from "@/app/context/userContext";
 import { toast } from "sonner";
+import useSWR from "swr";
+import {
+  fetchUserProfile,
+  updateUserProfile,
+} from "@/app/api/services/profileService";
 
 export const ProfileSetting = () => {
-  const router = useRouter();
-  const { login } = useUser();
+  const { user } = useUser();
+  const { updateUser } = useUser();
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const { data, error } = useSWR(
+    user?.email ? `/api/user?email=${user.email}` : null,
+    () => fetchUserProfile(user?.email!)
+  );
+
   const formSchema = z.object({
     email: z
       .string()
@@ -23,43 +33,47 @@ export const ProfileSetting = () => {
     name: z.string().min(1, { message: "Name is required" }),
     bio: z.string().min(1, { message: "Bio is required" }),
   });
+
   type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      jobTitle: "",
-      name: "",
-      bio: "",
+      email: data?.email,
+      jobTitle: data?.jobTitle,
+      name: data?.name,
+      bio: data?.bio,
     },
+    values: data, // will get updated once values returns
   });
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (formData: FormValues) => {
     setIsLoading(true);
-    await axios
-      .post("/api/updateProfile", data)
-      .then((response) => {
-        login(response?.data);
-        toast.success("Profile update successful.");
-        router.push("/");
-      })
-      .catch((error) => {
-        toast.error("Profile update failed. Please try again.");
-        console.log(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
+    try {
+      const updatedUser = await updateUserProfile(formData);
+      form.reset(updatedUser);
+      updateUser({
+        name: updatedUser.name,
+        email: updatedUser.email,
       });
+      toast.success("Profile update successful.");
+    } catch (error) {
+      toast.error("Profile update failed. Please try again.");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 border border-customGray rounded-lg p-4 "
+        className="space-y-6 border border-customGray rounded-lg p-4"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <TextInput
+            readonly
             label="Email"
             control={form.control}
             type="email"
