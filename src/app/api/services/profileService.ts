@@ -21,3 +21,17 @@ export const updateUserProfile = async (
   const response = await axios.put("/api/user", data);
   return response.data;
 };
+
+export const signUp = async (data: {
+  email: string;
+  password: string;
+  name?: string;
+}) => {
+  try {
+    const response = await axios.post("/api/signup", data);
+    return response.data;
+  } catch (error) {
+    console.error("Sign up failed", error);
+    throw error;
+  }
+};
