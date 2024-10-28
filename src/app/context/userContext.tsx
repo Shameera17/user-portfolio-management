@@ -64,11 +64,11 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   const updateUser = (updatedUserData: { name: string; email: string }) => {
-    setUser((prevUser) => {
-      if (prevUser) {
-        return { ...prevUser, ...updatedUserData };
-      }
-      return null;
+    setUser({
+      ...user,
+      name: updatedUserData.name,
+      email: updatedUserData.email,
+      token: user?.token!,
     });
   };
   return (

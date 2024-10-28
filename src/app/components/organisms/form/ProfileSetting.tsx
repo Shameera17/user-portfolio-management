@@ -55,7 +55,7 @@ export const ProfileSetting = () => {
   const onSubmit = async (formData: FormValues) => {
     setIsLoading(true);
     try {
-      const updatedUser = await updateUserProfile(formData);
+      const { data: updatedUser } = await updateUserProfile(formData);
       form.reset(updatedUser);
       updateUser({
         name: updatedUser.name,

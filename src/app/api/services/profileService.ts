@@ -17,7 +17,7 @@ export const fetchUserProfile = async (email: string): Promise<UserProfile> => {
 // Update user profile
 export const updateUserProfile = async (
   data: UserProfile
-): Promise<UserProfile> => {
+): Promise<{ message: string; data: UserProfile }> => {
   const response = await axios.put("/api/user", data);
   return response.data;
 };
