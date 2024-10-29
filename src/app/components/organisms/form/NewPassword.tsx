@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { PasswordInput, TextInput } from "../../molecules/TextInput";
+import { PasswordInput } from "../../molecules/TextInput";
 import { PrimaryButton } from "../../atoms/Button";
 import CheckPasswordGroup from "../../molecules/CheckPasswordGroup";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { H2, LinkText, P, P1, P2, P3 } from "../atoms/Typography";
+import { H2, LinkText, P1, P2 } from "../atoms/Typography";
 
 export const AuthLabelGroup = ({
   title,

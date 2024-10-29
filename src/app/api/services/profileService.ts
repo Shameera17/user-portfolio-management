@@ -35,3 +35,23 @@ export const signUp = async (data: {
     throw error;
   }
 };
+
+export const updateUserImage = async (data: {
+  email: string;
+  avatarUrl: string;
+}): Promise<{ message: string; data: { avatarUrl: string } }> => {
+  const response = await axios.put("/api/avatar", data);
+  return response.data;
+};
+export const deleteUserImage = async (
+  email: string
+): Promise<{ message: string }> => {
+  const response = await axios.delete("/api/avatar", { data: { email } });
+  return response.data;
+};
+export const fetchUserImage = async (
+  email: string
+): Promise<{ data: { avaatarUrl: string } }> => {
+  const response = await axios.get(`/api/avatar?email=${email}`);
+  return response.data;
+};

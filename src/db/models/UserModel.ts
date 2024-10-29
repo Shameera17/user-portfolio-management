@@ -8,7 +8,7 @@ const UserSchema = new Schema({
   bio: { type: String, required: false },
   name: { type: String, required: false },
   provider: { type: String, required: false },
-  avatarUrl: { type: String, required: false },
+  avatarUrl: { type: String, required: false, default: null },
 });
 
 UserSchema.pre("save", async function (next) {

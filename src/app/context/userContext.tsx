@@ -16,6 +16,7 @@ interface UserContextType {
   login: (userData: User) => void;
   logout: () => void;
   updateUser: (updatedUserData: { name: string; email: string }) => void;
+  updateUserAvatar: (avatarUrl: string | null) => void;
 }
 
 // Create UserContext with initial value as undefined
@@ -41,12 +42,13 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   // Check session storage for user data when the component mounts
   useEffect(() => {
-    if (sessionStorage.getItem("email"))
+    if (sessionStorage.getItem("email")) {
       setUser({
         token: getCookie("token")! || "",
         email: sessionStorage.getItem("email")! || "",
         name: sessionStorage.getItem("displayName")! || "",
       });
+    }
   }, []);
 
   // Function to log in the user
@@ -71,9 +73,23 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       token: user?.token!,
     });
   };
+  const updateUserAvatar = (avatarUrl: string | null) => {
+    setUser((prevUser) => {
+      if (prevUser) {
+        return {
+          ...prevUser,
+          avatarUrl,
+        };
+      }
+      return null;
+    });
+  };
+
   return (
     // Provide the context value to child components
-    <UserContext.Provider value={{ user, login, logout, updateUser }}>
+    <UserContext.Provider
+      value={{ user, login, logout, updateUser, updateUserAvatar }}
+    >
       {children}
     </UserContext.Provider>
   );

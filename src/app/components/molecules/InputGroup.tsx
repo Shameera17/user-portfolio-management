@@ -1,7 +1,6 @@
 import React from "react";
 import { Password } from "../atoms/TextInput";
-import Link from "next/link";
-import { LinkText, P3 } from "../atoms/Typography";
+import { LinkText } from "../atoms/Typography";
 
 interface InputGroupProps {
   placeholder: string;

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +18,6 @@ export const ProfileSetting = () => {
   const { user } = useUser();
   const { updateUser } = useUser();
   const [isLoading, setIsLoading] = React.useState(false);
-
   const { data, error } = useSWR(
     user?.email ? `/api/user?email=${user.email}` : null,
     () => (user?.email ? fetchUserProfile(user.email) : null) // Check if email exists
@@ -72,10 +71,7 @@ export const ProfileSetting = () => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 border border-customGray rounded-lg p-4"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <TextInput
             readonly
