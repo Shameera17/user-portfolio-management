@@ -51,7 +51,7 @@ export const deleteUserImage = async (
 };
 export const fetchUserImage = async (
   email: string
-): Promise<{ data: { avaatarUrl: string } }> => {
+): Promise<{ data: { avatarUrl: string } }> => {
   const response = await axios.get(`/api/avatar?email=${email}`);
   return response.data;
 };

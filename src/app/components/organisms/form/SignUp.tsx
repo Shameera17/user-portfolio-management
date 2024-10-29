@@ -47,7 +47,7 @@ export const SignUp = () => {
     mode: "onSubmit",
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: { email: string; password: string }) => {
     setIsLoading(true);
     try {
       await signUp(data);

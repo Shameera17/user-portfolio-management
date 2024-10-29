@@ -19,8 +19,8 @@ export function AvatarPopOver() {
   const { user, updateUserAvatar } = useUser();
   const getUserAvatar = async (email: string) => {
     const response = await fetchUserImage(email);
-    if (response.data.avaatarUrl) {
-      updateUserAvatar(response.data.avaatarUrl);
+    if (response.data.avatarUrl) {
+      updateUserAvatar(response.data.avatarUrl);
     }
   };
   useEffect(() => {

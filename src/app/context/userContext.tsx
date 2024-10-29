@@ -66,12 +66,14 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   const updateUser = (updatedUserData: { name: string; email: string }) => {
-    setUser({
-      ...user,
-      name: updatedUserData.name,
-      email: updatedUserData.email,
-      token: user?.token!,
-    });
+    if (user?.email) {
+      setUser({
+        ...user,
+        name: updatedUserData.name,
+        email: updatedUserData.email,
+        token: user.token!,
+      });
+    }
   };
   const updateUserAvatar = (avatarUrl: string | null) => {
     setUser((prevUser) => {

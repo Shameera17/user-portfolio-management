@@ -32,6 +32,7 @@ export const AvatarUpload = () => {
   const handleUpload = async () => {
     console.log("first");
     if (!file) return;
+    if (!user?.email) return;
     setUploading(true);
     const storageRef = ref(storage, `images/${file.name}`);
     console.log(file);
@@ -39,7 +40,7 @@ export const AvatarUpload = () => {
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
       await updateUserImage({
-        email: user?.email!,
+        email: user.email!,
         avatarUrl: url,
       }).then((res) => {
         updateUserAvatar(url);
@@ -81,7 +82,8 @@ export const AvatarUpload = () => {
         <UploadButton
           type="button"
           onClick={async () => {
-            await deleteUserImage(user?.email!).then((res) => {
+            if (!user?.email) return;
+            await deleteUserImage(user.email!).then((res) => {
               updateUserAvatar(null);
             });
           }}
