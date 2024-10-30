@@ -14,9 +14,11 @@ import { H2, P2 } from "../../atoms/Typography";
 import { Icon } from "../../atoms/Icon";
 import { useEffect } from "react";
 import { fetchUserImage } from "@/app/api/services/profileService";
+import {useRouter} from "next/navigation";
 
 export function AvatarPopOver() {
   const { user, updateUserAvatar } = useUser();
+  const router = useRouter();
   const getUserAvatar = async (email: string) => {
     const response = await fetchUserImage(email);
     if (response.data.avatarUrl) {
@@ -60,11 +62,11 @@ export function AvatarPopOver() {
         {/* account */}
         <DropdownMenuGroup>
           <P2 text={"Account"} />
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={()=> router.push('/dashboard/profile') }>
             <Icon path="/images/profile-2.svg" />
             <span>Profile Settings</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={()=> router.push('/dashboard/project') }>
             <Icon path="/images/multiple image-1.svg" />
             <span>Project Settings</span>
           </DropdownMenuItem>

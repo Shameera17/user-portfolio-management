@@ -54,7 +54,7 @@ export const AvatarUpload = () => {
         }
     };
     return (
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-4 bg-[#F2F5F9] py-7">
             <input
                 ref={fileInputRef}
                 style={{display: "none"}}
@@ -64,7 +64,7 @@ export const AvatarUpload = () => {
 
             <Icon
                 type={"avatar"}
-                dimention={52}
+                dimention={80}
                 onClick={handleUploadClick}
                 // Display previewUrl if available, otherwise fallback to user?.avatarUrl or default image
                 path={previewUrl ?? user?.avatarUrl ?? "/images/avatar-image.svg"}
