@@ -16,7 +16,10 @@ interface UserContextType {
   login: (userData: User) => void;
   logout: () => void;
   updateUser: (updatedUserData: { name: string; email: string }) => void;
-  updateUserAvatar: (avatarUrl: string | null) => void;
+  updateUserAvatar: (
+    avatarUrl: string | null,
+    avatarPath: string | null
+  ) => void;
 }
 
 // Create UserContext with initial value as undefined
@@ -75,12 +78,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       });
     }
   };
-  const updateUserAvatar = (avatarUrl: string | null) => {
+  const updateUserAvatar = (
+    avatarUrl: string | null,
+    avatarPath: string | null
+  ) => {
     setUser((prevUser) => {
       if (prevUser) {
         return {
           ...prevUser,
           avatarUrl,
+          avatarPath,
         };
       }
       return null;

@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   name: { type: String, required: false },
   provider: { type: String, required: false },
   avatarUrl: { type: String, required: false, default: null },
+  avatarPath: { type: String, required: false, default: null },
 });
 
 UserSchema.pre("save", async function (next) {

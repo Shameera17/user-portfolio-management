@@ -39,7 +39,11 @@ export const signUp = async (data: {
 export const updateUserImage = async (data: {
   email: string;
   avatarUrl: string;
-}): Promise<{ message: string; data: { avatarUrl: string } }> => {
+  avatarPath: string;
+}): Promise<{
+  message: string;
+  data: { avatarUrl: string; avatarPath: string };
+}> => {
   const response = await axios.put("/api/avatar", data);
   return response.data;
 };
@@ -51,7 +55,7 @@ export const deleteUserImage = async (
 };
 export const fetchUserImage = async (
   email: string
-): Promise<{ data: { avatarUrl: string } }> => {
+): Promise<{ data: { avatarUrl: string; avatarPath: string } }> => {
   const response = await axios.get(`/api/avatar?email=${email}`);
   return response.data;
 };

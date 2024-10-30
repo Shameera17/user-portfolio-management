@@ -3,4 +3,5 @@ export interface User {
   email: string;
   token: string;
   avatarUrl?: string | null;
+  avatarPath?: string | null;
 }

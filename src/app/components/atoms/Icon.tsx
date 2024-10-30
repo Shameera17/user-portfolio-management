@@ -20,6 +20,7 @@ export const Icon = ({
       src={path}
       width={dimention ?? 20}
       height={dimention ?? 20}
+      objectFit={"cover"}
       alt="logo"
     />
   );

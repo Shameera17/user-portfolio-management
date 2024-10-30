@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 
 export async function PUT(request: Request) {
   try {
-    const { email, avatarUrl } = await request.json();
+    const { email, avatarUrl, avatarPath } = await request.json();
 
     // Update the user profile
     const updatedProfile = await User.findOneAndUpdate(
       { email },
-      { avatarUrl },
+      { avatarUrl, avatarPath },
       { new: true }
     );
     if (!updatedProfile) {
@@ -26,6 +26,7 @@ export async function PUT(request: Request) {
       message: "Profile updated successfully",
       data: {
         avaatarUrl: updatedProfile.avatarUrl,
+        avatarPath: updatedProfile.avatarPath,
       },
     });
   } catch (error) {
@@ -44,7 +45,7 @@ export async function DELETE(request: Request) {
     // Update the user profile
     const updatedProfile = await User.findOneAndUpdate(
       { email },
-      { avatarUrl: null },
+      { avatarUrl: null, avatarPath: null },
       { new: true }
     );
     if (!updatedProfile) {
@@ -94,6 +95,7 @@ export async function GET(request: Request) {
       success: true,
       data: {
         avatarUrl: user.avatarUrl,
+        avatarPath: user.avatarPath,
       },
     });
   } catch (error) {

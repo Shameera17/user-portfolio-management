@@ -20,7 +20,7 @@ export function AvatarPopOver() {
   const getUserAvatar = async (email: string) => {
     const response = await fetchUserImage(email);
     if (response.data.avatarUrl) {
-      updateUserAvatar(response.data.avatarUrl);
+      updateUserAvatar(response.data.avatarUrl, response.data.avatarPath);
     }
   };
   useEffect(() => {
