@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -37,12 +36,12 @@ export function Modal({
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[600px] max-h-[95vh] rounded-lg ">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
-          {children}
+          <div className=" max-h-[70vh] overflow-y-auto">{children}</div>
         </DialogContent>
       </Dialog>
     );
@@ -53,17 +52,17 @@ export function Modal({
       open={open}
       onOpenChange={setOpen}
       fadeFromIndex={1}
-      snapPoints={[0.2, 0.5, 0.8]}
+      snapPoints={[0.9, 1]}
     >
-      <DrawerContent>
+      <DrawerContent className="max-h-[100vh]">
         <DrawerHeader className="text-left">
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription>{description}</DrawerDescription>
         </DrawerHeader>
-        {children}
+        <div className="overflow-y-auto">{children}</div>
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="default">Cancel</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

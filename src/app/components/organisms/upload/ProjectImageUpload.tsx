@@ -3,8 +3,7 @@ import React from "react";
 
 import { Icon } from "../../atoms/Icon";
 import { P2 } from "../../atoms/Typography";
-import { UploadButton } from "../../atoms/Button";
-
+import Image from "next/image";
 export const ProjectImageUpload = ({
   file,
   setPojectImage,
@@ -31,7 +30,7 @@ export const ProjectImageUpload = ({
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 bg-[#F2F5F9] py-7">
+    <div className="flex flex-col items-center gap-3 bg-[#F2F5F9] py-2">
       <input
         ref={fileInputRef}
         style={{ display: "none" }}
@@ -42,30 +41,36 @@ export const ProjectImageUpload = ({
       {!previewUrl && (
         <Icon
           type={"avatar"}
-          dimention={80}
+          dimention={90}
           onClick={handleUploadClick}
           path={"/images/avatar-image.svg"}
         />
       )}
       {previewUrl && (
-        <>
-          <img
+        <div className="relative inline-block">
+          {/* Image */}
+          <Image
             src={previewUrl}
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{ width: "auto", height: "100px" }}
             alt="Preview"
-            className="h-36 w-80  object-cover"
+            className="h-36 w-80 object-contain rounded-lg"
           />
-          <UploadButton
-            type="button"
+
+          {/* Trash Icon */}
+          <Icon
+            type="avatar"
+            dimention={20}
             onClick={async () => {
               setPojectImage(null);
               setPreviewUrl(null);
             }}
-            iconPath="/images/trash.svg"
-            label="Remove Image"
-            fontColor="#DD524C"
-            width="w-max"
+            path="/images/trash.svg"
+            className="absolute top-2 right-2 cursor-pointer bg-white shadow-inner bg-blend-normal hover:shadow-lg rounded-full p-0.5"
           />
-        </>
+        </div>
       )}
       <P2 text="Image must be PNG or JPEG - max 2MB" />
     </div>

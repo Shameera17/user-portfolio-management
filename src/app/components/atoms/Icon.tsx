@@ -6,15 +6,17 @@ export const Icon = ({
   onClick,
   dimention,
   type,
+  className,
 }: {
   path: string;
   onClick?: () => void;
   dimention?: number;
   type?: "icon" | "avatar";
+  className?: string;
 }) => {
   return (
     <Image
-      className={`${type === "avatar" ? "rounded-full" : ""}`}
+      className={`${type === "avatar" ? "rounded-full" : ""} ${className}`}
       style={{ cursor: onClick && "pointer" }}
       onClick={onClick}
       src={path}
