@@ -7,7 +7,7 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import { User } from "../types/user"; // Import the User type from types/user.ts
+import { User } from "../../types/user"; // Import the User type from types/user.ts
 import { getCookie } from "@/lib/helper/cookie";
 
 // Define the shape of the context's value
