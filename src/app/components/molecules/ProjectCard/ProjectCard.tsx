@@ -18,15 +18,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   imageUrl,
 }) => {
   return (
-    <div className={`${styles.card} flex md:flex-row flex-col md:h-40 p-3`}>
+    <div className={`${styles.card} flex md:flex-row flex-col md:min-h-32 p-3`}>
       <div
-        className={`${styles.imageWrapper} sm:w-full md:w-1/4 md:min-w-32 h-52 md:h-full`}
+        className={`${styles.imageWrapper} sm:w-full md:w-1/4 md:min-w-32 h-52 bg-[#F2F5F9] rounded-lg `}
       >
         <Image
           src={imageUrl}
           alt={title}
           layout="fill"
-          objectFit="cover"
+          objectFit="scale-down"
           className={styles.image}
         />
       </div>

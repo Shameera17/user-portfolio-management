@@ -14,7 +14,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 400 });
     }
     const projects = await Project.find({ userId: user._id });
-    return NextResponse.json(projects, { status: 200 });
+    return NextResponse.json(projects.toReversed(), { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
