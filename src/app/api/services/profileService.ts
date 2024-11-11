@@ -36,6 +36,16 @@ export const signUp = async (data: {
   }
 };
 
+export const signOut = async () => {
+  try {
+    const response = await axios.post("/api/logout");
+    return response.data;
+  } catch (error) {
+    console.error("Sign out failed", error);
+    throw error;
+  }
+};
+
 export const updateUserImage = async (data: {
   email: string;
   avatarUrl: string;

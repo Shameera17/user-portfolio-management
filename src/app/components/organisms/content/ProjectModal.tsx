@@ -13,6 +13,10 @@ import { TextArea, TextInput } from "../../molecules/TextInput";
 import { ProjectImageUpload } from "../upload/ProjectImageUpload";
 import { Form } from "@/components/ui/form";
 import { PrimaryButton } from "../../atoms/Button";
+import { useUser } from "@/app/context/userContext";
+import { storage } from "@/app/firebaseConfig";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { createProject } from "@/app/api/services/projectService";
 
 function ProjectModal({
   open,
@@ -26,7 +30,7 @@ function ProjectModal({
   record?: IProject;
 }) {
   const [file, setFile] = useState<File | null>(null);
-
+  const { user } = useUser();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const form = useForm<ProjectFormValues>({
@@ -39,15 +43,59 @@ function ProjectModal({
     },
   });
 
-  const onSubmit = async (formData: ProjectFormValues) => {
-    setIsLoading(true);
+  const addNewProject = async (formData: ProjectFormValues) => {
+    if (!file) {
+      throw new Error("No file selected");
+    }
+    if (!user?.email) {
+      throw new Error("No user found");
+    }
     try {
-      toast.success("Profile update successful.");
+      const filePath = `images/project/${user.email}/${file.name}`;
+      const storageRef = ref(storage, filePath);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      if (!url) {
+        throw new Error("No url found");
+      }
+      await createProject({
+        projectName: formData.projectName,
+        demoUrl: formData.demoUrl,
+        repositoryUrl: formData.repositoryUrl,
+        description: formData.description,
+        imageUrl: url,
+        imagePath: filePath,
+        email: user.email,
+      })
+        .then(() => {
+          toast.success("Project added successfully");
+          setOpen(false);
+        })
+        .catch((error) => {
+          toast.error("Project creation failed. Please try again.");
+          console.error(error);
+        });
+    } catch (error) {
+      toast.error("Please try again.");
+      console.log("unable to upload image");
+    }
+  };
+  const updateNewProject = (formData: ProjectFormValues) => {
+    try {
+      console.log(formData);
     } catch (error) {
       toast.error("Profile update failed. Please try again.");
       console.error(error);
-    } finally {
-      setIsLoading(false);
+    }
+  };
+
+  const onSubmit = async (formData: ProjectFormValues) => {
+    setIsLoading(true);
+    if (mode === "new") {
+      addNewProject(formData);
+    }
+    if (mode === "edit") {
+      updateNewProject(formData);
     }
   };
 

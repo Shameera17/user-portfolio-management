@@ -13,11 +13,11 @@ import { useUser } from "@/app/context/userContext";
 import { H2, P2 } from "../../atoms/Typography";
 import { Icon } from "../../atoms/Icon";
 import { useEffect } from "react";
-import { fetchUserImage } from "@/app/api/services/profileService";
-import {useRouter} from "next/navigation";
+import { fetchUserImage, signOut } from "@/app/api/services/profileService";
+import { useRouter } from "next/navigation";
 
 export function AvatarPopOver() {
-  const { user, updateUserAvatar } = useUser();
+  const { user, updateUserAvatar, logout } = useUser();
   const router = useRouter();
   const getUserAvatar = async (email: string) => {
     const response = await fetchUserImage(email);
@@ -62,11 +62,11 @@ export function AvatarPopOver() {
         {/* account */}
         <DropdownMenuGroup>
           <P2 text={"Account"} />
-          <DropdownMenuItem onClick={()=> router.push('/dashboard/profile') }>
+          <DropdownMenuItem onClick={() => router.push("/dashboard/profile")}>
             <Icon path="/images/profile-2.svg" />
             <span>Profile Settings</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={()=> router.push('/dashboard/project') }>
+          <DropdownMenuItem onClick={() => router.push("/dashboard/project")}>
             <Icon path="/images/multiple image-1.svg" />
             <span>Project Settings</span>
           </DropdownMenuItem>
@@ -77,7 +77,14 @@ export function AvatarPopOver() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         {/* log out */}
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={async () => {
+            await signOut().then(() => {
+              logout();
+              router.push("/auth/signin");
+            });
+          }}
+        >
           <LogOut />
           <span>Log out</span>
         </DropdownMenuItem>

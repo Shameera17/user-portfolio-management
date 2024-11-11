@@ -85,3 +85,23 @@ export const UploadButton = (props: IButtonProps) => {
     </Button>
   );
 };
+export const NavigateButton = (props: IButtonProps) => {
+  return (
+    <Button
+      disabled={props.isLoading || props.disabled}
+      className={` border-2 border-[#E3E8EF]  ${
+        props.width ? props.width : "w-full"
+      }`}
+      type={props.type}
+      variant={props.variant}
+      onClick={props.onClick}
+    >
+      <P1 text={props.label} fontColor={props.fontColor} />
+      {props.iconPath && !props.isLoading && (
+        <Avatar>
+          <AvatarImage className="ml-2 h-5 w-5 " src={props.iconPath} />
+        </Avatar>
+      )}
+    </Button>
+  );
+};
