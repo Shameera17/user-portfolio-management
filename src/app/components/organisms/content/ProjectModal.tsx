@@ -87,7 +87,7 @@ function ProjectModal({
   };
   const updateNewProject = async (formData: ProjectFormValues) => {
     const updateProject = async (filePath?: string, url?: string) => {
-      const projectCode = record!.projectCode!;
+      const projectCode = record!.code!;
       await editProject(
         {
           projectName: formData.projectName,
