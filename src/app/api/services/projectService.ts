@@ -1,7 +1,7 @@
 import { IProject } from "@/types/project";
 import axios from "axios";
 
-export const createProject = async (data: IProject): Promise<any> => {
+export const createProject = async (data: IProject) => {
   const response = await axios.post("/api/project", data);
   return response.data;
 };

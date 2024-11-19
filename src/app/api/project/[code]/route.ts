@@ -5,7 +5,27 @@ import { NextRequest } from "next/server";
 
 async function updateProject(code: string, updatedData: IProject) {
   connect(); // Ensure database connection
-  return await Project.findOneAndUpdate({ code }, updatedData, { new: true });
+  const {
+    projectName,
+    demoUrl,
+    repositoryUrl,
+    description,
+    imagePath,
+    imageUrl,
+  } = updatedData;
+
+  return await Project.findOneAndUpdate(
+    { code },
+    {
+      projectName,
+      demoUrl,
+      repositoryUrl,
+      description,
+      imagePath,
+      imageUrl,
+    },
+    { new: true }
+  );
 }
 
 async function deleteProject(code: string) {
