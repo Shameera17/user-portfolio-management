@@ -12,6 +12,7 @@ import { IProject } from "@/types/project";
 import { deleteProject } from "@/app/api/services/projectService";
 import { deleteObject, ref } from "firebase/storage";
 import { storage } from "@/app/firebaseConfig";
+import { toast } from "sonner";
 
 export default function ProjectPage() {
   const { user } = useUser();
@@ -81,16 +82,37 @@ export default function ProjectPage() {
                   });
                 }}
                 deleteProject={async () => {
-                  if (project.code) {
-                    if (project.imagePath && project.imageUrl) {
-                      const storageRef = ref(storage, project.imagePath);
-                      await deleteObject(storageRef);
+                  try {
+                    if (!project.code) {
+                      toast.error("Project code is missing.");
+                      return;
                     }
-                    await deleteProject(project.code!).then(() => {
-                      mutate(
-                        user?.email ? `/api/user?email=${user.email}` : null
+
+                    // Handle both image and project deletion
+                    try {
+                      if (project.imagePath && project.imageUrl) {
+                        const storageRef = ref(storage, project.imagePath);
+                        await deleteObject(storageRef);
+                      }
+                      const res = await deleteProject(project.code);
+                      toast.success(res.message);
+
+                      // Revalidate user-related data
+                      if (user?.email) {
+                        mutate(`/api/user?email=${user.email}`);
+                      }
+                    } catch (operationError) {
+                      console.error(
+                        "Error during project deletion process:",
+                        operationError
                       );
-                    });
+                      toast.error("Failed to delete the project or its image.");
+                    }
+                  } catch (generalError) {
+                    console.error("Unexpected error:", generalError);
+                    toast.error(
+                      "An unexpected error occurred. Please try again."
+                    );
                   }
                 }}
               />

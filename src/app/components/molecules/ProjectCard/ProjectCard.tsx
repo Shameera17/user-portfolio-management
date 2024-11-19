@@ -50,7 +50,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               iconPath="/images/externalLink.svg"
             />
           </div>
-          <div className={styles.buttons}>
+          <div className={"flex gap-2"}>
             <IconButton
               tooltipText="Edit"
               variant={"outline"}

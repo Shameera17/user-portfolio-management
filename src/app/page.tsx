@@ -1,22 +1,28 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useUser } from "./context/userContext";
 import { useRouter } from "next/navigation";
-import { DashboardTemplate } from "./components/templates/DashboardTemplate";
-import { AvatarUpload } from "./components/organisms/upload/AvatarUpload";
-import { ProfileSetting } from "./components/organisms/form/ProfileSetting";
-
+import { Progress } from "@/components/ui/progress";
 export default function Home() {
   const router = useRouter();
   const { user } = useUser();
-  if (!user) {
-    router.push("/auth/signin");
-  }
+  const [progress, setProgress] = useState(13);
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth/signin");
+    } else {
+      router.push("/dashboard/profile");
+    }
+  }, [user, router]);
+  useEffect(() => {
+    const timer = setTimeout(() => setProgress(66), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <DashboardTemplate title="Profile settings">
-      <div className="space-y-6 border border-customGray rounded-lg p-4">
-        <AvatarUpload />
-        <ProfileSetting />
-      </div>
-    </DashboardTemplate>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <Progress value={progress} className="w-[60%]" />
+    </div>
   );
 }
