@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "@/app/components/organisms/modal/Modal";
 import Wrapper from "@/app/components/atoms/Wrapper";
 import { IProject } from "@/types/project";
@@ -15,8 +15,13 @@ import { Form } from "@/components/ui/form";
 import { PrimaryButton } from "../../atoms/Button";
 import { useUser } from "@/app/context/userContext";
 import { storage } from "@/app/firebaseConfig";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { createProject } from "@/app/api/services/projectService";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { createProject, editProject } from "@/app/api/services/projectService";
 
 function ProjectModal({
   open,
@@ -80,9 +85,45 @@ function ProjectModal({
       console.log("unable to upload image");
     }
   };
-  const updateNewProject = (formData: ProjectFormValues) => {
+  const updateNewProject = async (formData: ProjectFormValues) => {
+    const updateProject = async (filePath?: string, url?: string) => {
+      const projectCode = record!.projectCode!;
+      await editProject(
+        {
+          projectName: formData.projectName,
+          demoUrl: formData.demoUrl,
+          repositoryUrl: formData.repositoryUrl,
+          description: formData.description,
+          imageUrl: url,
+          imagePath: filePath,
+          email: user!.email,
+        },
+        projectCode
+      )
+        .then(() => {
+          toast.success("Project added successfully");
+          setOpen(false);
+        })
+        .catch((error) => {
+          toast.error("Project creation failed. Please try again.");
+          console.error(error);
+        });
+    };
     try {
-      console.log(formData);
+      if (file) {
+        // create new file
+        const filePath = `images/project/${user!.email}/${file.name}`;
+        const storageRef = ref(storage, filePath);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        // remove old file
+        const storageRef1 = ref(storage, record!.imagePath!);
+        await deleteObject(storageRef1);
+        // update project
+        await updateProject(filePath, url);
+        return;
+      }
+      await updateProject(record!.imagePath!, record!.imageUrl!);
     } catch (error) {
       toast.error("Profile update failed. Please try again.");
       console.error(error);
@@ -99,11 +140,30 @@ function ProjectModal({
     }
   };
 
+  useEffect(() => {
+    if (mode === "edit") {
+      form.reset({
+        projectName: record?.projectName || "",
+        demoUrl: record?.demoUrl || "",
+        repositoryUrl: record?.repositoryUrl || "",
+        description: record?.description || "",
+      });
+    }
+  }, [mode, record]);
+
   return (
-    <Modal title={"Add new project"} setOpen={setOpen} open={open}>
+    <Modal
+      title={mode == "new" ? "Add new project" : "Update project"}
+      setOpen={setOpen}
+      open={open}
+    >
       <Wrapper>
         <div>
-          <ProjectImageUpload file={file} setPojectImage={setFile} />
+          <ProjectImageUpload
+            savedImageUrl={record?.imageUrl}
+            file={file}
+            setPojectImage={setFile}
+          />
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -145,7 +205,7 @@ function ProjectModal({
                   iconPath="/images/checkcircle-1.svg"
                   width=" w-full"
                   isLoading={isLoading}
-                  label="Add"
+                  label={mode === "new" ? "Add" : "Update"}
                   type="submit"
                 />
               </div>
@@ -156,5 +216,4 @@ function ProjectModal({
     </Modal>
   );
 }
-
 export default ProjectModal;

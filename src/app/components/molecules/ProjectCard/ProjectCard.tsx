@@ -1,55 +1,69 @@
 import Image from "next/image";
 import styles from "./ProjectCard.module.css";
-import { NavigateButton } from "../../atoms/Button";
+import { IconButton, NavigateButton } from "../../atoms/Button";
+import { IProject } from "@/types/project";
 
 interface ProjectCardProps {
-  title: string;
-  description: string;
-  demoUrl: string;
-  repoUrl: string;
-  imageUrl: string;
+  record: IProject;
+  editProject?: () => void;
+  deleteProject?: () => void;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
-  title,
-  description,
-  demoUrl,
-  repoUrl,
-  imageUrl,
+  record,
+  editProject,
+  deleteProject,
 }) => {
+  const { projectName, demoUrl, repositoryUrl, description, imageUrl } = record;
   return (
-    <div className={`${styles.card} flex md:flex-row flex-col md:min-h-32 p-3`}>
+    <div className={`${styles.card} flex md:flex-row flex-col md:min-h-24 p-3`}>
       <div
-        className={`${styles.imageWrapper} sm:w-full md:w-1/4 md:min-w-32 h-52 bg-[#F2F5F9] rounded-lg `}
+        className={`${styles.imageWrapper} sm:w-full md:w-1/4 md:min-w-32 h-44 bg-[#F2F5F9] rounded-lg `}
       >
         <Image
-          src={imageUrl}
-          alt={title}
+          src={imageUrl!}
+          alt={projectName!}
           layout="fill"
           objectFit="scale-down"
           className={styles.image}
         />
       </div>
-      <div className={styles.content}>
-        <h3 className={styles.title}>{title}</h3>
+      <div className={`${styles.content} md:w-3/4 w-full`}>
+        <h3 className={styles.title}>{projectName}</h3>
         <p className={styles.description}>{description}</p>
-        <div className={styles.buttons}>
-          <NavigateButton
-            variant={"outline"}
-            label={"Demo URL"}
-            onClick={() => {
-              window.open(demoUrl, "_blank");
-            }}
-            iconPath="/images/externalLink.svg"
-          />
-          <NavigateButton
-            variant={"outline"}
-            label={"Repository URL"}
-            onClick={() => {
-              window.open(repoUrl, "_blank");
-            }}
-            iconPath="/images/externalLink.svg"
-          />
+        <div className="flex justify-between w-full">
+          <div className={styles.buttons}>
+            <NavigateButton
+              variant={"outline"}
+              label={"Demo URL"}
+              onClick={() => {
+                window.open(demoUrl, "_blank");
+              }}
+              iconPath="/images/externalLink.svg"
+            />
+            <NavigateButton
+              variant={"outline"}
+              label={"Repository URL"}
+              onClick={() => {
+                window.open(repositoryUrl, "_blank");
+              }}
+              iconPath="/images/externalLink.svg"
+            />
+          </div>
+          <div className={styles.buttons}>
+            <IconButton
+              tooltipText="Edit"
+              variant={"outline"}
+              onClick={editProject}
+              iconPath="/images/Pencil.svg"
+            />
+            <IconButton
+              tooltipText="Remove"
+              variant={"outline"}
+              onClick={deleteProject}
+              iconPath="/images/Trash-1.svg"
+            />
+          </div>
         </div>
       </div>
     </div>

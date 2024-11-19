@@ -6,4 +6,5 @@ export interface IProject {
   imageUrl?: string | null;
   imagePath?: string | null;
   email?: string | null;
+  code?: string | null;
 }

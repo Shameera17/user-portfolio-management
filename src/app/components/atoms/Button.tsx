@@ -15,7 +15,7 @@ interface IButtonProps {
     | "link"
     | null
     | undefined;
-  label: string;
+  label?: string;
   onClick?: () => void;
   isLoading?: boolean;
   width?: string; // Add width prop
@@ -23,6 +23,9 @@ interface IButtonProps {
   fontColor?: string;
   disabled?: boolean;
   className?: string;
+}
+interface IconButtonProps extends IButtonProps {
+  tooltipText?: string; // Optional tooltip text specific to IconButton
 }
 
 export const PrimaryButton = (props: IButtonProps) => {
@@ -81,7 +84,7 @@ export const UploadButton = (props: IButtonProps) => {
         </Avatar>
       )}
       {props.isLoading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
-      <P1 text={props.label} fontColor={props.fontColor} />
+      <P1 text={props.label!} fontColor={props.fontColor} />
     </Button>
   );
 };
@@ -89,19 +92,42 @@ export const NavigateButton = (props: IButtonProps) => {
   return (
     <Button
       disabled={props.isLoading || props.disabled}
-      className={` border-2 border-[#E3E8EF]  ${
-        props.width ? props.width : "w-full"
-      }`}
+      className={` border-2 border-[#E3E8EF] `}
       type={props.type}
       variant={props.variant}
       onClick={props.onClick}
     >
-      <P1 text={props.label} fontColor={props.fontColor} />
+      <P1 text={props.label!} fontColor={props.fontColor} />
       {props.iconPath && !props.isLoading && (
         <Avatar>
           <AvatarImage className="ml-2 h-5 w-5 " src={props.iconPath} />
         </Avatar>
       )}
     </Button>
+  );
+};
+export const IconButton = (props: IconButtonProps) => {
+  return (
+    <div className="relative group">
+      <Button
+        disabled={props.isLoading || props.disabled}
+        className="border-2 border-[#E3E8EF]"
+        type={props.type}
+        variant={props.variant}
+        onClick={props.onClick}
+      >
+        {props.iconPath && !props.isLoading && (
+          <Avatar>
+            <AvatarImage className="h-5 w-5" src={props.iconPath} />
+          </Avatar>
+        )}
+      </Button>
+
+      {props.tooltipText && (
+        <span className="absolute bottom-full mb-2 hidden w-max px-2 py-1 text-sm text-white bg-gray-700 rounded-md shadow-md group-hover:block">
+          {props.tooltipText}
+        </span>
+      )}
+    </div>
   );
 };

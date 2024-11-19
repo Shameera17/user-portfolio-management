@@ -7,9 +7,11 @@ import Image from "next/image";
 export const ProjectImageUpload = ({
   file,
   setPojectImage,
+  savedImageUrl,
 }: {
   file: File | null;
   setPojectImage: (file: File | null) => void;
+  savedImageUrl?: string | null;
 }) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(
@@ -28,6 +30,12 @@ export const ProjectImageUpload = ({
       setPreviewUrl(URL.createObjectURL(selectedFile));
     }
   };
+
+  React.useEffect(() => {
+    if (savedImageUrl) {
+      setPreviewUrl(savedImageUrl);
+    }
+  }, [savedImageUrl]);
 
   return (
     <div className="flex flex-col items-center gap-3 bg-[#F2F5F9] py-2">

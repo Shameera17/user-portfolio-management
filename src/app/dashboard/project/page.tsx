@@ -8,13 +8,17 @@ import { getAllProjects } from "@/app/api/services/projectService";
 import { useUser } from "@/app/context/userContext";
 import ProjectCard from "@/app/components/molecules/ProjectCard/ProjectCard";
 import { SkeletonCard } from "@/app/components/molecules/SkeletonCard";
+import { IProject } from "@/types/project";
+import { deleteProject } from "@/app/api/services/projectService";
+import { deleteObject, ref } from "firebase/storage";
+import { storage } from "@/app/firebaseConfig";
 
 export default function ProjectPage() {
   const { user } = useUser();
   const [modalSetting, setModalSetting] = useState<{
     mode?: "edit" | "new";
     visible: boolean;
-    record: undefined;
+    record: undefined | IProject;
   }>({
     mode: undefined,
     visible: false,
@@ -36,7 +40,8 @@ export default function ProjectPage() {
     user?.email ? `/api/user?email=${user.email}` : null,
     () => (user?.email ? getAllProjects(user.email) : null) // Check if email exists
   );
-  mutate(user?.email ? `/api/user?email=${user.email}` : null);
+
+  if (!data) mutate(user?.email ? `/api/user?email=${user.email}` : null);
 
   return (
     <DashboardTemplate title="Profile settings">
@@ -51,6 +56,7 @@ export default function ProjectPage() {
           setOpen={openModal}
           open={modalSetting.visible}
           mode={modalSetting.mode ?? "new"}
+          record={modalSetting.record}
         />
       )}
       {isLoading ? (
@@ -64,11 +70,29 @@ export default function ProjectPage() {
           {Array.isArray(data) &&
             data?.map((project) => (
               <ProjectCard
-                title={project.projectName}
-                description={project.description ?? ""}
-                demoUrl={project.demoUrl ?? ""}
-                repoUrl={project.repositoryUrl ?? ""}
-                imageUrl={project.imageUrl ?? ""}
+                key={project.code}
+                record={project}
+                editProject={() => {
+                  setModalSetting({
+                    ...modalSetting,
+                    mode: "edit",
+                    visible: true,
+                    record: project,
+                  });
+                }}
+                deleteProject={async () => {
+                  if (project.code) {
+                    if (project.imagePath && project.imageUrl) {
+                      const storageRef = ref(storage, project.imagePath);
+                      await deleteObject(storageRef);
+                    }
+                    await deleteProject(project.code!).then(() => {
+                      mutate(
+                        user?.email ? `/api/user?email=${user.email}` : null
+                      );
+                    });
+                  }
+                }}
               />
             ))}
         </div>
