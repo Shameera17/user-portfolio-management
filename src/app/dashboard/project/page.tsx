@@ -13,11 +13,12 @@ import { deleteProject } from "@/app/api/services/projectService";
 import { deleteObject, ref } from "firebase/storage";
 import { storage } from "@/app/firebaseConfig";
 import { toast } from "sonner";
+import { Alert } from "@/app/components/organisms/modal/Alert";
 
 export default function ProjectPage() {
   const { user } = useUser();
   const [modalSetting, setModalSetting] = useState<{
-    mode?: "edit" | "new";
+    mode?: "edit" | "new" | "delete";
     visible: boolean;
     record: undefined | IProject;
   }>({
@@ -37,7 +38,7 @@ export default function ProjectPage() {
     }
   };
 
-  const { data, error, isLoading } = useSWR(
+  const { data, isLoading } = useSWR(
     user?.email ? `/api/user?email=${user.email}` : null,
     () => (user?.email ? getAllProjects(user.email) : null) // Check if email exists
   );
@@ -45,14 +46,14 @@ export default function ProjectPage() {
   if (!data) mutate(user?.email ? `/api/user?email=${user.email}` : null);
 
   return (
-    <DashboardTemplate title="Profile settings">
+    <DashboardTemplate title="Project settings">
       <PrimaryButton
         onClick={() =>
           setModalSetting({ ...modalSetting, mode: "new", visible: true })
         }
         label={"Add project"}
       />
-      {modalSetting.visible && (
+      {modalSetting.visible && modalSetting.mode !== "delete" && (
         <ProjectModal
           setOpen={openModal}
           open={modalSetting.visible}
@@ -60,7 +61,47 @@ export default function ProjectPage() {
           record={modalSetting.record}
         />
       )}
-      {isLoading ? (
+      {modalSetting.visible && modalSetting.mode === "delete" && (
+        <Alert
+          onOpenChange={openModal}
+          onCancel={() => openModal(false)}
+          onContinue={async () => {
+            const project = modalSetting.record!;
+            try {
+              if (!project.code) {
+                toast.error("Project code is missing.");
+                return;
+              }
+
+              // Handle both image and project deletion
+              try {
+                if (project.imagePath && project.imageUrl) {
+                  const storageRef = ref(storage, project.imagePath);
+                  await deleteObject(storageRef);
+                }
+                const res = await deleteProject(project.code);
+                toast.success(res.message);
+              } catch (operationError) {
+                console.error(
+                  "Error during project deletion process:",
+                  operationError
+                );
+                toast.error("Failed to delete the project or its image.");
+              }
+            } catch (generalError) {
+              console.error("Unexpected error:", generalError);
+              toast.error("An unexpected error occurred. Please try again.");
+            } finally {
+              openModal(false);
+              if (user?.email) {
+                mutate(`/api/user?email=${user.email}`);
+              }
+            }
+          }}
+          open={modalSetting.visible}
+        />
+      )}
+      {!data || isLoading ? (
         <div className="flex gap-3 flex-col">
           <SkeletonCard />
           <SkeletonCard />
@@ -82,38 +123,12 @@ export default function ProjectPage() {
                   });
                 }}
                 deleteProject={async () => {
-                  try {
-                    if (!project.code) {
-                      toast.error("Project code is missing.");
-                      return;
-                    }
-
-                    // Handle both image and project deletion
-                    try {
-                      if (project.imagePath && project.imageUrl) {
-                        const storageRef = ref(storage, project.imagePath);
-                        await deleteObject(storageRef);
-                      }
-                      const res = await deleteProject(project.code);
-                      toast.success(res.message);
-
-                      // Revalidate user-related data
-                      if (user?.email) {
-                        mutate(`/api/user?email=${user.email}`);
-                      }
-                    } catch (operationError) {
-                      console.error(
-                        "Error during project deletion process:",
-                        operationError
-                      );
-                      toast.error("Failed to delete the project or its image.");
-                    }
-                  } catch (generalError) {
-                    console.error("Unexpected error:", generalError);
-                    toast.error(
-                      "An unexpected error occurred. Please try again."
-                    );
-                  }
+                  setModalSetting({
+                    ...modalSetting,
+                    mode: "delete",
+                    visible: true,
+                    record: project,
+                  });
                 }}
               />
             ))}

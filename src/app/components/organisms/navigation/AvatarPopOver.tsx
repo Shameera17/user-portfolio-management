@@ -1,4 +1,5 @@
 import { LogOut } from "lucide-react";
+import { signOut as gitSignOut } from "next-auth/react";
 
 import {
   DropdownMenu,
@@ -79,9 +80,10 @@ export function AvatarPopOver() {
         {/* log out */}
         <DropdownMenuItem
           onClick={async () => {
-            await signOut().then(() => {
+            await signOut().then(async () => {
               logout();
               router.push("/auth/signin");
+              await gitSignOut();
             });
           }}
         >

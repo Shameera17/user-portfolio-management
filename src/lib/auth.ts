@@ -10,6 +10,10 @@ export const authOptions: AuthOptions = {
   ],
   session: {
     strategy: "jwt",
+    maxAge: Number(process.env.AUTH_GITHUB_EXPIRES_IN!),
+  },
+  jwt: {
+    maxAge: Number(process.env.AUTH_GITHUB_EXPIRES_IN!),
   },
   secret: process.env.AUTH_SECRET || "",
 };

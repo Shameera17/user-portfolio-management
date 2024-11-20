@@ -104,7 +104,7 @@ export const ProfileSetting = () => {
           placeholder="Enter a short introduction.."
         />
 
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-6">
           <PrimaryButton
             iconPath="/images/checkcircle-1.svg"
             width="w-max"

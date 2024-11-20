@@ -15,16 +15,19 @@ export interface IUser extends Document {
 }
 
 // Define the User schema
-const UserSchema = new Schema<IUser>({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  jobTitle: { type: String, required: false },
-  bio: { type: String, required: false },
-  name: { type: String, required: false },
-  provider: { type: String, required: false },
-  avatarUrl: { type: String, required: false, default: null },
-  avatarPath: { type: String, required: false, default: null },
-});
+const UserSchema = new Schema<IUser>(
+  {
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    jobTitle: { type: String, required: false },
+    bio: { type: String, required: false },
+    name: { type: String, required: false },
+    provider: { type: String, required: false },
+    avatarUrl: { type: String, required: false, default: null },
+    avatarPath: { type: String, required: false, default: null },
+  },
+  { timestamps: true }
+);
 
 // Pre-save middleware for hashing password
 UserSchema.pre<IUser>("save", async function (next) {
