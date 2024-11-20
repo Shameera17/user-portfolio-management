@@ -182,14 +182,14 @@ function ProjectModal({
                   control={form.control}
                   type="text"
                   name="demoUrl"
-                  placeholder="Enter the demo URL"
+                  placeholder="https://sample-demo-url.com"
                 />
                 <TextInput
                   label="Repository URL"
                   control={form.control}
                   type="text"
                   name="repositoryUrl"
-                  placeholder="Enter the repository URL"
+                  placeholder="https://sample-repo-url.com"
                 />
               </div>
 

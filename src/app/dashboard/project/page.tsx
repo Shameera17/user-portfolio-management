@@ -31,6 +31,7 @@ export default function ProjectPage() {
       ...modalSetting,
       visible: flag,
       mode: undefined,
+      record: !flag ? undefined : modalSetting.record,
     });
     if (!flag) {
       // Revalidate useSWR when modal closes
