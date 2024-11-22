@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import User from "@/db/models/UserModel";
 import { connect } from "@/db/config";
 import { Account, User as AuthUser } from "next-auth";
-export const authOptions = {
+const authOptions = {
   providers: [
     CredentialsProvider({
       id: "credentials",
