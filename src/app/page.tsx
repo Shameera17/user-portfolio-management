@@ -14,10 +14,12 @@ export default function Home() {
     if (!status || status === "unauthenticated") {
       router.push("/auth/signin");
     } else {
-      if (!user?.email && session?.user?.email) {
+      // check if user email is already stored and session email is available
+      const { name, email } = session?.user || {};
+      if (!user?.email && email) {
         login({
-          name: session?.user?.name!,
-          email: session?.user?.email!,
+          name: name!,
+          email: email!,
         });
       }
       router.push("/dashboard/profile");
