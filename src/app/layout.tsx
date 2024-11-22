@@ -4,6 +4,7 @@ import "./globals.css";
 import { UserProvider } from "./context/userContext";
 import { Toaster } from "@/components/ui/sonner";
 import SessionProvider from "../lib/SessionProvider";
+import { getServerSession } from "next-auth";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -60,13 +61,12 @@ export const metadata: Metadata = {
   manifest: "/favicon/site.webmanifest",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-  session,
 }: Readonly<{
   children: React.ReactNode;
-  session: any;
 }>) {
+  const session = await getServerSession();
   return (
     <html lang="en">
       <body
