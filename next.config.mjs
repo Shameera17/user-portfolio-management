@@ -2,7 +2,10 @@
 const nextConfig = {
   images: {
     dangerouslyAllowSVG: true,
-    domains: ["firebasestorage.googleapis.com"],
+    domains: [
+      "firebasestorage.googleapis.com",
+      "avatars.githubusercontent.com",
+    ],
   },
 };
 

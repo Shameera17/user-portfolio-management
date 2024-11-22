@@ -1,10 +1,10 @@
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import User from "@/db/models/UserModel";
 import { connect } from "@/db/config";
+import { Account, User as AuthUser } from "next-auth";
 export const authOptions = {
-  // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -43,10 +43,40 @@ export const authOptions = {
       clientId: process.env.AUTH_GITHUB_ID! || "",
       clientSecret: process.env.AUTH_GITHUB_SECRET! || "",
     }),
-    // ...add more providers here
   ],
+  callbacks: {
+    async signIn({ user, account }: { user: AuthUser; account: Account }) {
+      if (account?.provider === "credentials") {
+        return true;
+      }
+      if (account?.provider === "github") {
+        await connect();
+        try {
+          const existingUser = await User.findOne({
+            email: user.email,
+          });
+          if (!existingUser) {
+            const newUser = await User.create({
+              name: user.name,
+              email: user.email,
+              avatarUrl: user.image,
+              provider: account.provider,
+            });
+            await newUser.save();
+            return true;
+          }
+          return true;
+        } catch (error) {
+          throw new Error(
+            error instanceof Error ? error.message : String(error)
+          );
+        }
+      }
+      return false;
+    },
+  },
 };
 
-const handler = NextAuth(authOptions);
+const handler = NextAuth(authOptions as AuthOptions);
 
 export { handler as GET, handler as POST };
