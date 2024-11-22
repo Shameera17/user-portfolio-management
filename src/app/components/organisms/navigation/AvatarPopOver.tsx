@@ -1,5 +1,5 @@
 import { LogOut } from "lucide-react";
-import { signOut as gitSignOut } from "next-auth/react";
+import { signOut as nextAuthSignOut } from "next-auth/react";
 
 import {
   DropdownMenu,
@@ -14,7 +14,7 @@ import { useUser } from "@/app/context/userContext";
 import { H2, P2 } from "../../atoms/Typography";
 import { Icon } from "../../atoms/Icon";
 import { useEffect } from "react";
-import { fetchUserImage, signOut } from "@/app/api/services/profileService";
+import { fetchUserImage } from "@/app/api/services/profileService";
 import { useRouter } from "next/navigation";
 
 export function AvatarPopOver() {
@@ -80,10 +80,9 @@ export function AvatarPopOver() {
         {/* log out */}
         <DropdownMenuItem
           onClick={async () => {
-            await signOut().then(async () => {
-              logout();
-              router.push("/auth/signin");
-              await gitSignOut();
+            logout();
+            await nextAuthSignOut({ redirect: false }).then(() => {
+              router.replace("/auth/signin");
             });
           }}
         >

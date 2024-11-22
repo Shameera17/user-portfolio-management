@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,14 +8,15 @@ import { PasswordInput, TextInput } from "../../molecules/TextInput";
 import { PrimaryButton } from "../../atoms/Button";
 import { AuthLabelGroup1 } from "../../molecules/AuthLabelGroup";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { useUser } from "@/app/context/userContext";
 import { toast } from "sonner";
+import { signIn, useSession } from "next-auth/react";
 
 export const SignIn = () => {
   const router = useRouter();
   const { login } = useUser();
   const [isLoading, setIsLoading] = React.useState(false);
+  const { data: session, status } = useSession();
   const formSchema = z.object({
     email: z
       .string()
@@ -32,22 +34,29 @@ export const SignIn = () => {
     },
   });
 
+  useEffect(() => {
+    if (status === "authenticated" && typeof window !== "undefined") {
+      router.push("/");
+    }
+  }, [status, router]);
+
   const onSubmit = async (data: FormValues) => {
     setIsLoading(true);
-    await axios
-      .post("/api/signin", data)
-      .then((response) => {
-        login(response?.data);
-        toast.success("Login successful.");
-        router.push("/");
+    await signIn("credentials", {
+      redirect: false,
+      email: data.email,
+      password: data.password,
+    })
+      .then((res) => {
+        if (res?.error) {
+          toast.error("Login failed. Please try again.");
+          console.log(res.error);
+        }
+        if (res?.url) {
+          router.replace("/");
+        }
       })
-      .catch((error) => {
-        toast.error("Login failed. Please try again.");
-        console.log(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .finally(() => setIsLoading(false));
   };
   return (
     <Form {...form}>

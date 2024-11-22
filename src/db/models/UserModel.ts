@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 // Define an interface for User Document
 export interface IUser extends Document {
   email: string;
-  password: string;
+  password?: string;
   jobTitle?: string;
   bio?: string;
   name?: string;
@@ -18,7 +18,7 @@ export interface IUser extends Document {
 const UserSchema = new Schema<IUser>(
   {
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: false },
     jobTitle: { type: String, required: false },
     bio: { type: String, required: false },
     name: { type: String, required: false },
@@ -31,6 +31,7 @@ const UserSchema = new Schema<IUser>(
 
 // Pre-save middleware for hashing password
 UserSchema.pre<IUser>("save", async function (next) {
+  if (!this.password) return next();
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
