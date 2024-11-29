@@ -11,6 +11,7 @@ export interface IUser extends Document {
   provider?: string;
   avatarUrl?: string | null;
   avatarPath?: string | null;
+  username?: string;
   comparePassword(enteredPassword: string): Promise<boolean>;
 }
 
@@ -25,6 +26,7 @@ const UserSchema = new Schema<IUser>(
     provider: { type: String, required: false },
     avatarUrl: { type: String, required: false, default: null },
     avatarPath: { type: String, required: false, default: null },
+    username: { type: String, required: false },
   },
   { timestamps: true }
 );

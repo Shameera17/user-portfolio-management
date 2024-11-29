@@ -50,10 +50,12 @@ function ProjectModal({
 
   const addNewProject = async (formData: ProjectFormValues) => {
     if (!file) {
-      throw new Error("No file selected");
+      toast.error("No file selected");
+      return;
     }
     if (!user?.email) {
-      throw new Error("No user found");
+      toast.error("Please try again.");
+      return;
     }
     try {
       const filePath = `images/project/${user.email}/${file.name}`;
@@ -83,6 +85,8 @@ function ProjectModal({
     } catch (error) {
       toast.error("Please try again.");
       console.log("unable to upload image");
+    } finally {
+      setIsLoading(false);
     }
   };
   const updateNewProject = async (formData: ProjectFormValues) => {
@@ -125,8 +129,10 @@ function ProjectModal({
       }
       await updateProject(record!.imagePath!, record!.imageUrl!);
     } catch (error) {
-      toast.error("Profile update failed. Please try again.");
+      toast.error("Project update failed. Please try again.");
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

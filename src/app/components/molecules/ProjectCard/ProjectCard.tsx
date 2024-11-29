@@ -21,7 +21,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         className={`${styles.imageWrapper} sm:w-full md:w-1/4 md:min-w-32 h-44 bg-[#F2F5F9] rounded-lg `}
       >
         <Image
-          src={imageUrl!}
+          src={imageUrl! ?? "/images/multiple image-1.svg"}
           alt={projectName!}
           layout="fill"
           objectFit="scale-down"

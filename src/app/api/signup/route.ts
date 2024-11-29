@@ -1,5 +1,7 @@
 import { connect } from "@/db/config";
 import User from "@/db/models/UserModel";
+import { ensureUniqueUsername } from "@/lib/helper/generateUsername";
+import { extractNameFromEmail } from "@/lib/helper/regex";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -17,7 +19,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    const user = new User({ email, password });
+    const name = extractNameFromEmail(email);
+    const username = await ensureUniqueUsername(name);
+    const user = new User({ email, password, username });
+
     await user.save();
     return NextResponse.json({ message: "Sign up success" });
   } catch (error) {
