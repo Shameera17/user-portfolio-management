@@ -43,7 +43,7 @@ export function AvatarPopOver() {
           />
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-full space-x-2 ">
         <DropdownMenuGroup className="flex gap-2">
           <DropdownMenuItem>
             <Avatar>
