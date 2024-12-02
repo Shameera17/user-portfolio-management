@@ -1,6 +1,8 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { AuthLabelGroup } from "../molecules/AuthLabelGroup";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export const AuthTemplate = ({
   children,
@@ -11,6 +13,14 @@ export const AuthTemplate = ({
   title: string;
   subtitle: string;
 }) => {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/");
+    } else {
+    }
+  }, [session, status, router]);
   return (
     <div className="min-h-screen flex justify-center">
       {/* Left Section (Image) */}

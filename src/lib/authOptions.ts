@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 10 * 60,
+    maxAge: 60 * 60,
   },
   callbacks: {
     async signIn({
@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
           });
           if (!existingUser) {
-            const username = ensureUniqueUsername(user.name!);
+            const username = await ensureUniqueUsername(user.name!);
             const newUser = await User.create({
               name: user.name,
               email: user.email,
