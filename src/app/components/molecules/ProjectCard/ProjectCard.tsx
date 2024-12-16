@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import styles from "./ProjectCard.module.css";
 import { IconButton, NavigateButton } from "../../atoms/Button";
@@ -16,6 +17,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   deleteProject,
   isHide,
 }) => {
+  const handleUrlOpen = (url: string) => {
+    if (typeof window !== "undefined") {
+      window.open(url, "_blank");
+    }
+  };
   const { projectName, demoUrl, repositoryUrl, description, imageUrl } = record;
   return (
     <div className={`${styles.card} flex md:flex-row flex-col md:min-h-24 p-3`}>
@@ -38,17 +44,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             <NavigateButton
               variant={"outline"}
               label={"Demo URL"}
-              onClick={() => {
-                window.open(demoUrl, "_blank");
-              }}
+              onClick={() => handleUrlOpen(demoUrl)}
               iconPath="/images/externalLink.svg"
             />
             <NavigateButton
               variant={"outline"}
               label={"Repository URL"}
-              onClick={() => {
-                window.open(repositoryUrl, "_blank");
-              }}
+              onClick={() => handleUrlOpen(repositoryUrl)}
               iconPath="/images/externalLink.svg"
             />
           </div>
