@@ -4,4 +4,5 @@ export interface User {
   token?: string;
   avatarUrl?: string | null;
   avatarPath?: string | null;
+  username?: string | null;
 }

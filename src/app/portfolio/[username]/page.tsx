@@ -1,11 +1,10 @@
 "use client";
-
 import React from "react";
-import useSWR from "swr";
-import { notFound } from "next/navigation";
+import useSWR, { mutate } from "swr";
+import { fetchUserPortfolio } from "../../api/services/portfolioService";
+import { useRouter } from "next/navigation";
 import { ProgressIndicator } from "@/app/components/molecules/ProgressIndicator";
 import Portfolio from "@/app/components/pages/UserPortfolio";
-import { fetchUserPortfolio } from "../api/services/portfolioService";
 
 interface PageProps {
   params: { username: string };
@@ -13,11 +12,16 @@ interface PageProps {
 
 export default function Page({ params }: PageProps) {
   const { username } = params;
-
-  const { data, error, isLoading } = useSWR(
+  const router = useRouter();
+  const { data, isLoading } = useSWR(
     username ? `/api/portfolio?username=${username}` : null,
     () => fetchUserPortfolio(username)
   );
+
+  // Trigger mutate directly if required.
+  if (!data && username) {
+    mutate(`/api/user?email=${username}`);
+  }
 
   if (isLoading) {
     return (
@@ -33,8 +37,9 @@ export default function Page({ params }: PageProps) {
     );
   }
 
-  if (error || !data) {
-    notFound(); // Redirects to the 404 page.
+  if (!data) {
+    router.replace("/404");
+    return null;
   }
 
   return (

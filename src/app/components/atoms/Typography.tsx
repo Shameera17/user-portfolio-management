@@ -23,9 +23,11 @@ export function H2({ text, fontSize }: { text: string; fontSize?: string }) {
   return <h2 className={styles}>{text}</h2>;
 }
 
-export function H3({ text }: TypographyProps) {
+export function H3({ text, className }: TypographyProps) {
   return (
-    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+    <h3
+      className={`font-inter scroll-m-20 text-2xl font-semibold tracking-tight ${className}`}
+    >
       {text}
     </h3>
   );
@@ -74,6 +76,15 @@ export function P4({ text, onClick }: TypographyProps) {
     <p
       onClick={onClick}
       className="font-inter font-semibold text-[10px] leading-[1.25] text-[#677489]"
+    >
+      {text}
+    </p>
+  );
+}
+export function P5({ text, className }: TypographyProps) {
+  return (
+    <p
+      className={` ${className} font-inter font-medium text-[16px] leading-[1.25] text-[#677489]`}
     >
       {text}
     </p>

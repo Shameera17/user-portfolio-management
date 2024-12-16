@@ -1,3 +1,4 @@
+"use client";
 import { LogOut } from "lucide-react";
 import { signOut as nextAuthSignOut } from "next-auth/react";
 
@@ -23,7 +24,11 @@ export function AvatarPopOver() {
   const getUserAvatar = async (email: string) => {
     const response = await fetchUserImage(email);
     if (response.data.avatarUrl) {
-      updateUserAvatar(response.data.avatarUrl, response.data.avatarPath);
+      updateUserAvatar(
+        response.data.avatarUrl,
+        response.data.avatarPath,
+        response.data.username
+      );
     }
   };
   useEffect(() => {
@@ -71,10 +76,14 @@ export function AvatarPopOver() {
             <Icon path="/images/multiple image-1.svg" />
             <span>Project Settings</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Icon path="/images/airplay.svg" />
-            <span>My Portfolio</span>
-          </DropdownMenuItem>
+          {user?.username && (
+            <DropdownMenuItem
+              onClick={() => router.push(`/portfolio/${user?.username}`)}
+            >
+              <Icon path="/images/airplay.svg" />
+              <span>My Portfolio</span>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         {/* log out */}

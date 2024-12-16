@@ -50,7 +50,7 @@ export const AvatarUpload = () => {
         avatarUrl: url,
         avatarPath: filePath,
       }).then(() => {
-        updateUserAvatar(url, filePath);
+        updateUserAvatar(url, filePath, user.username!);
       });
       console.log("file uploaded successfully");
     } catch (error) {
@@ -99,7 +99,7 @@ export const AvatarUpload = () => {
               await deleteObject(storageRef);
             }
             await deleteUserImage(user.email!).then(() => {
-              updateUserAvatar(null, null);
+              updateUserAvatar(null, null, user.username!);
             });
           }}
           isLoading={uploading}

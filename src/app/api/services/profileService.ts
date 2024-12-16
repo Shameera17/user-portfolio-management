@@ -1,7 +1,7 @@
 // app/api/services/profileService.ts
 import axios from "axios";
 
-export interface UserProfile {
+interface UserProfile {
   name: string;
   email: string;
   jobTitle: string;
@@ -36,16 +36,6 @@ export const signUp = async (data: {
   }
 };
 
-export const signOut = async () => {
-  try {
-    const response = await axios.post("/api/logout");
-    return response.data;
-  } catch (error) {
-    console.error("Sign out failed", error);
-    throw error;
-  }
-};
-
 export const updateUserImage = async (data: {
   email: string;
   avatarUrl: string;
@@ -65,7 +55,9 @@ export const deleteUserImage = async (
 };
 export const fetchUserImage = async (
   email: string
-): Promise<{ data: { avatarUrl: string; avatarPath: string } }> => {
+): Promise<{
+  data: { avatarUrl: string; avatarPath: string; username: string };
+}> => {
   const response = await axios.get(`/api/avatar?email=${email}`);
   return response.data;
 };

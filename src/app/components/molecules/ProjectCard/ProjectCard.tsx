@@ -7,12 +7,14 @@ interface ProjectCardProps {
   record: IProject;
   editProject?: () => void;
   deleteProject?: () => void;
+  isHide?: boolean;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
   record,
   editProject,
   deleteProject,
+  isHide,
 }) => {
   const { projectName, demoUrl, repositoryUrl, description, imageUrl } = record;
   return (
@@ -50,20 +52,22 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               iconPath="/images/externalLink.svg"
             />
           </div>
-          <div className={"flex gap-2"}>
-            <IconButton
-              tooltipText="Edit"
-              variant={"outline"}
-              onClick={editProject}
-              iconPath="/images/Pencil.svg"
-            />
-            <IconButton
-              tooltipText="Remove"
-              variant={"outline"}
-              onClick={deleteProject}
-              iconPath="/images/Trash-1.svg"
-            />
-          </div>
+          {!isHide && (
+            <div className={"flex gap-2"}>
+              <IconButton
+                tooltipText="Edit"
+                variant={"outline"}
+                onClick={editProject}
+                iconPath="/images/Pencil.svg"
+              />
+              <IconButton
+                tooltipText="Remove"
+                variant={"outline"}
+                onClick={deleteProject}
+                iconPath="/images/Trash-1.svg"
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

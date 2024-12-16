@@ -8,11 +8,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { HTMLInputTypeAttribute, useState, useCallback } from "react";
+import {
+  HTMLInputTypeAttribute,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import { Control, FieldValues, Path } from "react-hook-form";
 import { Eye, EyeClosed } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-
+import { Sapling } from "@saplingai/sapling-js/observer";
 // Updated interface for better flexibility with generic types
 interface IInputProps<T extends FieldValues> {
   type?: HTMLInputTypeAttribute;
@@ -71,7 +77,54 @@ export function TextArea<T extends FieldValues>({
     <FormItem>
       <FormLabel>{label}</FormLabel>
       <FormControl>
-        <Textarea placeholder={placeholder} {...field} />
+        <Textarea
+          contentEditable="true"
+          id="editor"
+          sapling-ignore="true"
+          placeholder={placeholder}
+          {...field}
+        />
+      </FormControl>
+      <FormMessage>{error?.message}</FormMessage>
+    </FormItem>
+  );
+}
+export function SaplingTextArea<T extends FieldValues>({
+  placeholder,
+  label,
+  control,
+  name,
+}: IInputProps<T>) {
+  const { field, error } = useFormControl({
+    control,
+    name,
+  });
+  const editorRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    Sapling.init({
+      key: "SXQZ6J4AJMYXAIHOWEX8GJMOAWNW4OD1",
+      endpointHostname: "https://api.sapling.ai",
+      editPathname: "/api/v1/edits",
+      statusBadge: true,
+      mode: "dev",
+    });
+
+    const editor = document.getElementById("editor");
+    Sapling.observe(editor!);
+  });
+  return (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <FormControl>
+        <Textarea
+          contentEditable="true"
+          id="editor"
+          sapling-ignore="true"
+          placeholder={placeholder}
+          {...field}
+          ref={editorRef}
+        />
       </FormControl>
       <FormMessage>{error?.message}</FormMessage>
     </FormItem>

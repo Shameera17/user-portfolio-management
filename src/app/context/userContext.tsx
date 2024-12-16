@@ -8,7 +8,6 @@ import {
   ReactNode,
 } from "react";
 import { User } from "../../types/user"; // Import the User type from types/user.ts
-import { getCookie } from "@/lib/helper/cookie";
 
 // Define the shape of the context's value
 interface UserContextType {
@@ -18,7 +17,8 @@ interface UserContextType {
   updateUser: (updatedUserData: { name: string; email: string }) => void;
   updateUserAvatar: (
     avatarUrl: string | null,
-    avatarPath: string | null
+    avatarPath: string | null,
+    username: string | null
   ) => void;
 }
 
@@ -47,7 +47,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   useEffect(() => {
     if (sessionStorage.getItem("email")) {
       setUser({
-        token: getCookie("token")! || "",
         email: sessionStorage.getItem("email")! || "",
         name: sessionStorage.getItem("displayName")! || "",
       });
@@ -80,7 +79,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
   const updateUserAvatar = (
     avatarUrl: string | null,
-    avatarPath: string | null
+    avatarPath: string | null,
+    username: string | null
   ) => {
     setUser((prevUser) => {
       if (prevUser) {
@@ -88,6 +88,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
           ...prevUser,
           avatarUrl,
           avatarPath,
+          username,
         };
       }
       return null;

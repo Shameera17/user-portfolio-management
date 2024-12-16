@@ -96,6 +96,7 @@ export async function GET(request: Request) {
       data: {
         avatarUrl: user.avatarUrl,
         avatarPath: user.avatarPath,
+        username: user.username,
       },
     });
   } catch (error) {
