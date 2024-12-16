@@ -14,17 +14,6 @@ export default function UserPortfolio({
 }: {
   portfolio: Portfolio;
 }) {
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true); // This ensures the component is client-side.
-  }, []);
-
-  const sendMail = () => {
-    if (isClient) {
-      window.location.assign(`mailto:${user.email}`);
-    }
-  };
-
   return (
     <div className="flex flex-col">
       {/* top */}
@@ -51,13 +40,11 @@ export default function UserPortfolio({
         <div>
           <H3 text={user.name} className="text-[#364153] mb-1" />
           <P5 text={user.jobTitle} />
-          <Button
-            onClick={sendMail}
-            variant={"outline"}
-            className="text-[#364153] mt-5"
-          >
-            <Mail /> Contact
-          </Button>
+          <a href={`mailto:${user.email}`}>
+            <Button variant={"outline"} className="text-[#364153] mt-5">
+              <Mail /> Contact
+            </Button>
+          </a>
         </div>
         {/* bio */}
         <div>
