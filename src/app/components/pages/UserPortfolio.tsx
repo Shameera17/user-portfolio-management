@@ -13,7 +13,7 @@ export default function UserPortfolio({
   portfolio: Portfolio;
 }) {
   function sendEmail() {
-    if (typeof window !== "undefined")
+    if (window !== undefined && typeof window !== "undefined")
       window.location.assign(`mailto:${user.email}`);
   }
   return (
