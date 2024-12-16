@@ -35,7 +35,7 @@ export const SignIn = () => {
   });
 
   useEffect(() => {
-    if (status === "authenticated" && typeof window !== "undefined") {
+    if (status === "authenticated") {
       router.push("/");
     }
   }, [status, router]);
