@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import ProjectCard from "../molecules/ProjectCard/ProjectCard";
 import { Portfolio } from "@/app/api/services/portfolioService";
 import { Avatar } from "@/components/ui/avatar";
@@ -12,10 +12,11 @@ export default function UserPortfolio({
 }: {
   portfolio: Portfolio;
 }) {
-  function sendEmail() {
-    if (window !== undefined && typeof window !== "undefined")
+  const sendMail = useCallback(() => {
+    if (global?.window && window !== undefined && typeof window !== "undefined")
       window.location.assign(`mailto:${user.email}`);
-  }
+  }, [window]);
+
   return (
     <div className="flex flex-col">
       {/* top */}
@@ -43,7 +44,7 @@ export default function UserPortfolio({
           <H3 text={user.name} className="text-[#364153] mb-1" />
           <P5 text={user.jobTitle} />
           <Button
-            onClick={sendEmail}
+            onClick={sendMail}
             variant={"outline"}
             className="text-[#364153] mt-5"
           >
