@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ProjectCard from "../molecules/ProjectCard/ProjectCard";
 import { Portfolio } from "@/app/api/services/portfolioService";
 import { Avatar } from "@/components/ui/avatar";
@@ -14,11 +14,16 @@ export default function UserPortfolio({
 }: {
   portfolio: Portfolio;
 }) {
-  const sendMail = useCallback(() => {
-    if (typeof window !== "undefined") {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true); // This ensures the component is client-side.
+  }, []);
+
+  const sendMail = () => {
+    if (isClient) {
       window.location.assign(`mailto:${user.email}`);
     }
-  }, [user.email]);
+  };
 
   return (
     <div className="flex flex-col">
