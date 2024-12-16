@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback } from "react";
 import ProjectCard from "../molecules/ProjectCard/ProjectCard";
 import { Portfolio } from "@/app/api/services/portfolioService";
@@ -13,9 +15,10 @@ export default function UserPortfolio({
   portfolio: Portfolio;
 }) {
   const sendMail = useCallback(() => {
-    if (global?.window && window !== undefined && typeof window !== "undefined")
+    if (typeof window !== "undefined") {
       window.location.assign(`mailto:${user.email}`);
-  }, [window]);
+    }
+  }, [user.email]);
 
   return (
     <div className="flex flex-col">
