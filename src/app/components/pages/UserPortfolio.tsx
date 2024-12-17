@@ -48,15 +48,18 @@ export default function UserPortfolio({
         </div>
         {/* bio */}
         <div>
-          <P5 text={"Bio"} />
-          <P5 text={user.bio} className="text-[#364153]" />
+          <P5 text={"Bio"} className="mb-1" />
+          <P5 text={user.bio} className="text-black" />
         </div>
         {/* projects */}
-        <div className="space-y-4">
-          {Array.isArray(projectList) &&
-            projectList?.map((project) => (
-              <ProjectCard isHide key={project.code} record={project} />
-            ))}
+        <div>
+          <P5 text={"Projects"} className="mb-3" />
+          <div className="space-y-4">
+            {Array.isArray(projectList) &&
+              projectList?.map((project) => (
+                <ProjectCard isHide key={project.code} record={project} />
+              ))}
+          </div>
         </div>
       </section>
     </div>

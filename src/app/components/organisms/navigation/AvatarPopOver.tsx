@@ -77,9 +77,7 @@ export function AvatarPopOver() {
             <span>Project Settings</span>
           </DropdownMenuItem>
           {user?.username && (
-            <DropdownMenuItem
-              onClick={() => router.push(`/portfolio/${user?.username}`)}
-            >
+            <DropdownMenuItem onClick={() => router.push(`/${user?.username}`)}>
               <Icon path="/images/airplay.svg" />
               <span>My Portfolio</span>
             </DropdownMenuItem>

@@ -84,7 +84,7 @@ export function P4({ text, onClick }: TypographyProps) {
 export function P5({ text, className }: TypographyProps) {
   return (
     <p
-      className={` ${className} font-inter font-medium text-[16px] leading-[1.25] text-[#677489]`}
+      className={` font-inter font-medium text-[16px] leading-[1.25] text-[#677489]  ${className}`}
     >
       {text}
     </p>
