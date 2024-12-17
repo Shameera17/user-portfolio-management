@@ -58,15 +58,16 @@ export const AvatarUpload = () => {
     }
 
     const isValidType = validateImageType(selectedFile.type);
-    const isValidSize = validateImageSize(selectedFile.size);
+    if (!isValidType) return;
 
-    if (isValidType && isValidSize) {
-      setFile(selectedFile);
-      setPreviewUrl(URL.createObjectURL(selectedFile));
-      toast.success(
-        "Image selected successfully! Please click upload button to upload image."
-      );
-    }
+    const isValidSize = validateImageSize(selectedFile.size);
+    if (!isValidSize) return;
+
+    setFile(selectedFile);
+    setPreviewUrl(URL.createObjectURL(selectedFile));
+    toast.success(
+      "Image selected successfully! Please click upload button to upload image."
+    );
   };
 
   const handleUpload = async () => {

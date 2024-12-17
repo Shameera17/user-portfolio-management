@@ -4,6 +4,7 @@ import React from "react";
 import { Icon } from "../../atoms/Icon";
 import { P2 } from "../../atoms/Typography";
 import Image from "next/image";
+import { toast } from "sonner";
 export const ProjectImageUpload = ({
   file,
   setPojectImage,
@@ -18,6 +19,25 @@ export const ProjectImageUpload = ({
     file ? URL.createObjectURL(file) : null
   );
 
+  const validateImageSize = (fileSize: number) => {
+    const maxSizeInMB = 2; // 2MB
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+    if (fileSize > maxSizeInBytes) {
+      toast.error("Image size exceeds 2MB. Please upload a smaller file.");
+      return false;
+    }
+    return true;
+  };
+
+  const validateImageType = (fileType: string) => {
+    const allowedTypes = ["image/png", "image/jpeg"];
+    if (!allowedTypes.includes(fileType)) {
+      toast.error("Image must be in PNG or JPEG format.");
+      return false;
+    }
+    return true;
+  };
+
   const handleUploadClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -25,10 +45,16 @@ export const ProjectImageUpload = ({
   };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setPojectImage(selectedFile);
-      setPreviewUrl(URL.createObjectURL(selectedFile));
+    if (!selectedFile) {
+      toast.error("No file selected.");
+      return;
     }
+    const isValidType = validateImageType(selectedFile.type);
+    if (!isValidType) return;
+    const isValidSize = validateImageSize(selectedFile.size);
+    if (!isValidSize) return;
+    setPojectImage(selectedFile);
+    setPreviewUrl(URL.createObjectURL(selectedFile));
   };
 
   React.useEffect(() => {
