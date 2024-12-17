@@ -95,14 +95,16 @@ export const ProfileSetting = () => {
             name="name"
             placeholder="Enter your name"
           />
+          {/* Bio taking full width */}
+          <div className="col-span-1 sm:col-span-2">
+            <TextArea
+              label="Bio"
+              control={form.control}
+              name="bio"
+              placeholder="Enter a short introduction.."
+            />
+          </div>
         </div>
-
-        <TextArea
-          label="Bio"
-          control={form.control}
-          name="bio"
-          placeholder="Enter a short introduction.."
-        />
 
         <div className="flex justify-end mt-6">
           <PrimaryButton
