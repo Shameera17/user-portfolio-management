@@ -32,7 +32,7 @@ export function Modal({
   setOpen: (open: boolean) => void;
   open: boolean;
 }) {
-  const isDesktop = true;
+  const isDesktop = useMediaQuery("(min-width: 600px)");
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>

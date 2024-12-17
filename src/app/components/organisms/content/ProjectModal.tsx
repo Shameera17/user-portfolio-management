@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Modal } from "@/app/components/organisms/modal/Modal";
 import Wrapper from "@/app/components/atoms/Wrapper";

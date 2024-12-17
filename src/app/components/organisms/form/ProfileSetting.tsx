@@ -4,11 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import {
-  SaplingTextArea,
-  TextArea,
-  TextInput,
-} from "../../molecules/TextInput";
+import { TextArea, TextInput } from "../../molecules/TextInput";
 import { PrimaryButton } from "../../atoms/Button";
 import { useUser } from "@/app/context/userContext";
 import { toast } from "sonner";
@@ -101,7 +97,7 @@ export const ProfileSetting = () => {
           />
         </div>
 
-        <SaplingTextArea
+        <TextArea
           label="Bio"
           control={form.control}
           name="bio"
