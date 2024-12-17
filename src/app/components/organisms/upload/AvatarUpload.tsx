@@ -16,6 +16,7 @@ import {
 } from "@/app/api/services/profileService";
 import { useUser } from "@/app/context/userContext";
 import { Avatar } from "@/components/ui/avatar";
+import { toast } from "sonner";
 
 export const AvatarUpload = () => {
   const [file, setFile] = React.useState<File | null>(null);
@@ -29,13 +30,45 @@ export const AvatarUpload = () => {
       fileInputRef.current.click();
     }
   };
+
+  const validateImageSize = (fileSize: number) => {
+    const maxSizeInMB = 2; // 2MB
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+    if (fileSize > maxSizeInBytes) {
+      toast.error("Image size exceeds 2MB. Please upload a smaller file.");
+      return false;
+    }
+    return true;
+  };
+
+  const validateImageType = (fileType: string) => {
+    const allowedTypes = ["image/png", "image/jpeg"];
+    if (!allowedTypes.includes(fileType)) {
+      toast.error("Image must be in PNG or JPEG format.");
+      return false;
+    }
+    return true;
+  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
+    if (!selectedFile) {
+      toast.error("No file selected.");
+      return;
+    }
+
+    const isValidType = validateImageType(selectedFile.type);
+    const isValidSize = validateImageSize(selectedFile.size);
+
+    if (isValidType && isValidSize) {
       setFile(selectedFile);
       setPreviewUrl(URL.createObjectURL(selectedFile));
+      toast.success(
+        "Image selected successfully! Please click upload button to upload image."
+      );
     }
   };
+
   const handleUpload = async () => {
     if (!file) return;
     if (!user?.email) return;
@@ -51,9 +84,11 @@ export const AvatarUpload = () => {
         avatarPath: filePath,
       }).then(() => {
         updateUserAvatar(url, filePath, user.username!);
+        toast.success("Image uploaded successfully.");
       });
       console.log("file uploaded successfully");
     } catch (error) {
+      toast.error("Image upload unsuccessful.");
       console.log("error uploading the file");
     } finally {
       setUploading(false);
