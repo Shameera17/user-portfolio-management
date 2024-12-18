@@ -31,7 +31,6 @@ export const AuthTemplate = ({
           className="w-full h-screen  object-cover"
         />
       </section>
-
       {/* Right Section (Form) */}
       <section className="flex flex-col justify-center items-center md:w-2/3 h-screen p-6">
         <div className="max-w-sm w-full">
@@ -39,7 +38,6 @@ export const AuthTemplate = ({
             <Image src="/images/Logo.svg" width={78} height={24} alt="logo" />
             <AuthLabelGroup title={title} subtitle={subtitle} />
           </div>
-
           {/* Children (Input Form) */}
           {children}
         </div>

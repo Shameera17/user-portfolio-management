@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 export const NewPassword = ({ token }: { token: string }) => {
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
   const formSchema = z
     .object({
       password: z.string().min(1, { message: "Password is required" }),
@@ -22,6 +22,7 @@ export const NewPassword = ({ token }: { token: string }) => {
       message: "Passwords do not match",
       path: ["confirmPassword"],
     });
+
   type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
@@ -34,14 +35,18 @@ export const NewPassword = ({ token }: { token: string }) => {
   });
 
   const onSubmit = async (data: FormValues) => {
+    setLoading(true);
     await updatePasswordRequest(token, data.password)
       .then((data) => {
-        toast.success(data.message);
         toast.info("You will be redirected to the Login page.");
+        toast.success(data.message, { duration: 1000 });
         router.push("/auth/signin");
       })
       .catch((error) => {
         toast.error(error.response.data.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   return (
@@ -61,7 +66,11 @@ export const NewPassword = ({ token }: { token: string }) => {
           placeholder="Re-enter a password"
         />
         <CheckPasswordGroup password={form.watch("confirmPassword")} />
-        <PrimaryButton label="Reset Password" type="submit" />
+        <PrimaryButton
+          isLoading={loading}
+          label="Reset Password"
+          type="submit"
+        />
       </form>
     </Form>
   );

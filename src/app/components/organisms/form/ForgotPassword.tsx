@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PrimaryButton } from "../../atoms/Button";
 import { AuthLabelGroup1 } from "../../molecules/AuthLabelGroup";
 import { z } from "zod";
@@ -9,6 +9,7 @@ import { TextInput } from "../../molecules/TextInput";
 import { resetPasswordRequest } from "@/app/api/services/profileService";
 
 export const ForgotPassword = () => {
+  const [loading, setLoading] = useState(false);
   const formSchema = z.object({
     email: z
       .string()
@@ -26,10 +27,14 @@ export const ForgotPassword = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
+    setLoading(true);
     await resetPasswordRequest(data.email)
       .then((data) => console.log(data))
       .catch((error) => {
         form.setError("email", error.response.data);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   return (
@@ -44,7 +49,11 @@ export const ForgotPassword = () => {
           name="email"
           placeholder="Enter your email"
         />
-        <PrimaryButton label="Reset Password" type="submit" />
+        <PrimaryButton
+          isLoading={loading}
+          label="Reset Password"
+          type="submit"
+        />
         <AuthLabelGroup1 text2={"Back to login"} href="/auth/signin" />
       </form>
     </Form>
