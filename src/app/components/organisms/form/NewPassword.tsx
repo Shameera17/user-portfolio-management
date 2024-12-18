@@ -6,8 +6,13 @@ import { Form } from "@/components/ui/form";
 import { PasswordInput } from "../../molecules/TextInput";
 import { PrimaryButton } from "../../atoms/Button";
 import CheckPasswordGroup from "../../molecules/CheckPasswordGroup";
+import { updatePasswordRequest } from "@/app/api/services/profileService";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-export const NewPassword = () => {
+export const NewPassword = ({ token }: { token: string }) => {
+  const router = useRouter();
+
   const formSchema = z
     .object({
       password: z.string().min(1, { message: "Password is required" }),
@@ -28,8 +33,16 @@ export const NewPassword = () => {
     mode: "onChange",
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
+  const onSubmit = async (data: FormValues) => {
+    await updatePasswordRequest(token, data.password)
+      .then((data) => {
+        toast.success(data.message);
+        toast.info("You will be redirected to the Login page.");
+        router.push("/auth/signin");
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
   };
   return (
     <Form {...form}>

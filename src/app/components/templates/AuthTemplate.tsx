@@ -24,13 +24,11 @@ export const AuthTemplate = ({
   return (
     <div className="min-h-screen flex justify-center">
       {/* Left Section (Image) */}
-      <section className="relative hidden md:flex md:w-1/3 h-screen">
-        <Image
+      <section className=" hidden md:flex md:w-1/3 h-screen">
+        <img
           src="/images/login-bg.svg"
-          fill={true}
           alt="auth-side-img"
-          className="object-fit p-6"
-          loading="lazy"
+          className="w-full h-screen  object-cover"
         />
       </section>
 

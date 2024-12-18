@@ -20,14 +20,16 @@ export const AuthLabelGroup1 = ({
   text2,
   onClick1,
   href,
+  className,
 }: {
   text1?: string;
   text2?: string;
   onClick1?: () => void;
   href?: string;
+  className?: string;
 }) => {
   return (
-    <div className="flex gap-2">
+    <div className={`flex gap-2 ${className}`}>
       {text1 && <P2 text={text1} onClick={onClick1} />}
       {text2 && <LinkText text={text2} linkHref={href!} />}
     </div>

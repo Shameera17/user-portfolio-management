@@ -13,6 +13,8 @@ export interface IUser extends Document {
   avatarPath?: string | null;
   username?: string;
   comparePassword(enteredPassword: string): Promise<boolean>;
+  resetToken?: string;
+  resetTokenExpiry?: Date;
 }
 
 // Define the User schema
@@ -27,6 +29,8 @@ const UserSchema = new Schema<IUser>(
     avatarUrl: { type: String, required: false, default: null },
     avatarPath: { type: String, required: false, default: null },
     username: { type: String, required: false },
+    resetToken: { type: String, required: false },
+    resetTokenExpiry: { type: Date, required: false },
   },
   { timestamps: true }
 );
@@ -44,6 +48,16 @@ UserSchema.methods.comparePassword = async function (
   enteredPassword: string
 ): Promise<boolean> {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+UserSchema.methods.resetPassword = async function (newPassword: string) {
+  console.log("first");
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newPassword, salt);
+  this.password = hashedPassword;
+  this.resetToken = undefined;
+  this.resetTokenExpiry = undefined;
+  console.log("last");
 };
 
 // Create the User model with typing

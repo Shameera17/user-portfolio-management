@@ -8,13 +8,11 @@ import { PasswordInput, TextInput } from "../../molecules/TextInput";
 import { PrimaryButton } from "../../atoms/Button";
 import { AuthLabelGroup1 } from "../../molecules/AuthLabelGroup";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/app/context/userContext";
 import { toast } from "sonner";
 import { signIn, useSession } from "next-auth/react";
 
 export const SignIn = () => {
   const router = useRouter();
-  const { login } = useUser();
   const [isLoading, setIsLoading] = React.useState(false);
   const { data: session, status } = useSession();
   const formSchema = z.object({
@@ -74,6 +72,11 @@ export const SignIn = () => {
           control={form.control}
           name="password"
           placeholder="Enter your password"
+        />
+        <AuthLabelGroup1
+          text2={"Forgot password"}
+          href="/auth/forgot-password"
+          className="justify-end !mt-[-8px]"
         />
         <PrimaryButton isLoading={isLoading} label="Sign In" type="submit" />
         <AuthLabelGroup1

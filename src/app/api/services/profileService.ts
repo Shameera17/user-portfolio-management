@@ -61,3 +61,19 @@ export const fetchUserImage = async (
   const response = await axios.get(`/api/avatar?email=${email}`);
   return response.data;
 };
+
+export const resetPasswordRequest = async (email: string): Promise<any> => {
+  const response = await axios.post(`/api/manage-password`, {
+    data: { email },
+  });
+  return response.data;
+};
+export const updatePasswordRequest = async (
+  token: string,
+  password: string
+): Promise<any> => {
+  const response = await axios.put(`/api/manage-password`, {
+    data: { token, password },
+  });
+  return response.data;
+};
