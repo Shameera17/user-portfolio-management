@@ -35,9 +35,9 @@ export const ProjectSetting = ({
   const onSubmit = async (formData: ProjectFormValues) => {
     setIsLoading(true);
     try {
-      toast.success("Profile update successful.");
+      toast.success("Project update successful.");
     } catch (error) {
-      toast.error("Profile update failed. Please try again.");
+      toast.error("Project update failed. Please try again.");
       console.error(error);
     } finally {
       setIsLoading(false);

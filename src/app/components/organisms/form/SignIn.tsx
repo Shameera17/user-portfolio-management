@@ -14,7 +14,7 @@ import { signIn, useSession } from "next-auth/react";
 export const SignIn = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const formSchema = z.object({
     email: z
       .string()

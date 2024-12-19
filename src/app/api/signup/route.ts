@@ -21,7 +21,6 @@ export async function POST(request: Request) {
   try {
     const name = extractNameFromEmail(email);
     const username = await ensureUniqueUsername(name);
-    console.log("username", username);
     const user = new User({ email, password, username });
 
     await user.save();

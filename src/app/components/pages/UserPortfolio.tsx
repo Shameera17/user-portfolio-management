@@ -18,11 +18,10 @@ export default function UserPortfolio({
     <div className="flex flex-col">
       {/* top */}
       <section className="relative mb-20">
-        {" "}
         {/* Adjusted margin-bottom */}
         <img
           src="/images/profile-bg.svg"
-          alt=""
+          alt="profile-bg"
           className="w-full h-52 object-cover"
         />
         <div className="absolute top-[120px] left-1/3 transform -translate-x-1/3">

@@ -9,6 +9,7 @@ import CheckPasswordGroup from "../../molecules/CheckPasswordGroup";
 import { updatePasswordRequest } from "@/app/api/services/profileService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { extractErrorMessage } from "@/lib/helper";
 
 export const NewPassword = ({ token }: { token: string }) => {
   const router = useRouter();
@@ -43,7 +44,7 @@ export const NewPassword = ({ token }: { token: string }) => {
         router.push("/auth/signin");
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        toast.error(extractErrorMessage(error));
       })
       .finally(() => {
         setLoading(false);

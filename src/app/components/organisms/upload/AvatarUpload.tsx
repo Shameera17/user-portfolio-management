@@ -87,10 +87,9 @@ export const AvatarUpload = () => {
         updateUserAvatar(url, filePath, user.username!);
         toast.success("Image uploaded successfully.");
       });
-      console.log("file uploaded successfully");
     } catch (error) {
       toast.error("Image upload unsuccessful.");
-      console.log("error uploading the file");
+      console.log("error uploading the file", error);
     } finally {
       setUploading(false);
     }
